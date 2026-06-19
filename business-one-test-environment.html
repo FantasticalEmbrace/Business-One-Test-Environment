@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business One Test Environment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#4A90D9;--orange:#F5A623;--white:#fff;--surface:#f8fafc;--g100:#f1f5f9;--g200:#e2e8f0;--g300:#cbd5e1;--g500:#64748b;--g700:#334155;--g900:#0f172a;--ok:#16a34a;--ok-l:#dcfce7;--err:#dc2626;--err-l:#fee2e2;--warn:#d97706;--warn-l:#fef3c7;--bl:#e8f2fc;--ol:#fef3e2;--r:12px;--rs:8px;--sh:0 2px 8px rgba(15,23,42,.06);--f:'Inter',system-ui,sans-serif;--eo:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box;margin:0}html,body{height:100%;font-family:var(--f);background:var(--surface);color:var(--g900);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:250px 1fr;grid-template-rows:auto 1fr;height:100vh;overflow:hidden}
+.top-bar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:.5rem 1.5rem;background:var(--white);border-bottom:3px solid var(--orange);box-shadow:var(--sh);z-index:10}
+.brand{display:flex;align-items:center;gap:.75rem}.brand-logo{height:50px;width:auto}.brand-text h1{font-size:.75rem;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:.05em}
+.platform-tabs{display:flex;gap:3px;background:var(--g100);border-radius:var(--r);padding:3px}
+.platform-tab{padding:.35rem .75rem;border-radius:var(--rs);border:none;font-size:.75rem;font-weight:700;cursor:pointer;background:transparent;color:var(--g500);font-family:var(--f);transition:all .2s var(--eo)}
+.platform-tab.active{background:var(--white);color:var(--blue);box-shadow:var(--sh)}.platform-tab:hover:not(.active){color:var(--g700)}
+.sidebar{background:var(--white);border-right:1px solid var(--g200);padding:1rem 0;overflow-y:auto;display:flex;flex-direction:column}
+.nav-section{padding:0 .65rem;margin-bottom:1.25rem}.nav-label{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--g500);padding:0 .65rem;margin-bottom:.4rem}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.55rem .65rem;border-radius:var(--rs);cursor:pointer;font-weight:600;font-size:.8125rem;color:var(--g700);border:none;background:none;width:100%;text-align:left;font-family:var(--f);transition:all .15s var(--eo)}
+.nav-item:hover{background:var(--g100);color:var(--g900)}.nav-item.active{background:var(--bl);color:var(--blue)}
+.nav-item i{width:16px;height:16px;flex-shrink:0}.nav-badge{margin-left:auto;font-size:.6rem;font-weight:800;background:var(--orange);color:var(--white);padding:.08rem .4rem;border-radius:999px}
+.sidebar-footer{margin-top:auto;padding:.65rem;border-top:1px solid var(--g200)}
+.run-btn{width:100%;padding:.7rem;border:none;border-radius:var(--r);background:var(--blue);color:var(--white);font-weight:700;font-size:.875rem;cursor:pointer;font-family:var(--f)}
+.run-btn:active{transform:scale(.98)}
+.main{overflow-y:auto;padding:1.25rem}.page{display:none}.page.active{display:block}
+.section-title{font-size:1rem;font-weight:800;margin-bottom:.85rem}
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem;margin-bottom:1.25rem}
+.stat-card{background:var(--white);border-radius:var(--r);padding:1rem;box-shadow:var(--sh);border:1px solid var(--g200)}
+.stat-card .label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500)}
+.stat-card .value{font-size:1.5rem;font-weight:900;margin-top:.2rem;font-variant-numeric:tabular-nums}
+.stat-card .sub{font-size:.7rem;color:var(--g500);margin-top:.2rem}
+.stat-card.blue .value{color:var(--blue)}.stat-card.green .value{color:var(--ok)}.stat-card.red .value{color:var(--err)}.stat-card.orange .value{color:var(--orange)}
+.hw-toolbar{display:flex;gap:.6rem;margin-bottom:.85rem;flex-wrap:wrap;align-items:center}
+.hw-search{flex:1;min-width:160px;padding:.55rem .85rem;border:2px solid var(--g200);border-radius:var(--r);font-size:.8125rem;font-family:var(--f)}.hw-search:focus{outline:none;border-color:var(--blue)}
+.hw-filter{padding:.55rem .75rem;border:2px solid var(--g200);border-radius:var(--r);font-size:.75rem;font-weight:600;background:var(--white);font-family:var(--f);color:var(--g700);cursor:pointer}
+.hw-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)}
+.hw-table th{text-align:left;padding:.6rem .75rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);background:var(--g100);border-bottom:1px solid var(--g200)}
+.hw-table td{padding:.45rem .75rem;font-size:.75rem;border-bottom:1px solid var(--g100)}.hw-table tr:last-child td{border-bottom:none}.hw-table tr:hover td{background:#fafcff}
+.badge{display:inline-block;padding:.1rem .35rem;border-radius:999px;font-size:.55rem;font-weight:700;text-transform:uppercase}
+.badge.printer{background:var(--bl);color:var(--blue)}.badge.drawer{background:var(--ol);color:#b87a0a}.badge.display{background:var(--ok-l);color:var(--ok)}.badge.terminal{background:#f3e8ff;color:#7c3aed}.badge.screen{background:var(--warn-l);color:var(--warn)}.badge.scanner{background:#e0f2fe;color:#0369a1}
+.tag{display:inline-block;padding:.06rem .25rem;border-radius:3px;font-size:.55rem;font-weight:600;background:var(--g100);color:var(--g700);margin-right:.12rem}
+.hw-pg{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;font-size:.75rem;color:var(--g500)}
+.hw-pg button{padding:.3rem .6rem;border:1.5px solid var(--g200);border-radius:var(--rs);background:var(--white);font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--f)}.hw-pg button:disabled{opacity:.35;cursor:not-allowed}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:.85rem}
+.card{background:var(--white);border-radius:var(--r);padding:1.1rem;border:2px solid var(--g200);transition:border-color .2s}.card.on{border-color:var(--ok)}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}.card-title{font-weight:700;font-size:.85rem}
+.card-pill{font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:999px}.card-pill.on{background:var(--ok-l);color:var(--ok)}.card-pill.off{background:var(--g100);color:var(--g500)}
+.card-meta{font-size:.7rem;color:var(--g500);margin-bottom:.6rem;line-height:1.5}
+.card-actions{display:flex;gap:.35rem;flex-wrap:wrap}
+.btn{padding:.4rem .65rem;border-radius:var(--rs);border:1.5px solid var(--g200);background:var(--white);font-size:.7rem;font-weight:600;cursor:pointer;font-family:var(--f);color:var(--g700);transition:all .15s}
+.btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bl)}
+.btn.p{background:var(--blue);color:var(--white);border-color:var(--blue)}.btn.p:hover{background:#3a7bc8}
+.btn.a{background:var(--orange);color:var(--white);border-color:var(--orange)}
+.conn-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}@media(max-width:900px){.conn-grid{grid-template-columns:1fr}}
+.panel{background:var(--white);border-radius:var(--r);padding:1.25rem;border:1px solid var(--g200);box-shadow:var(--sh)}
+.panel h3{font-size:.9rem;font-weight:800;margin-bottom:.2rem;color:var(--blue)}.panel p{font-size:.75rem;color:var(--g500);margin-bottom:.85rem}
+.ff{margin-bottom:.75rem}.ff label{display:block;font-size:.7rem;font-weight:700;color:var(--g700);margin-bottom:.25rem}
+.fi{width:100%;padding:.55rem .7rem;border:2px solid var(--g200);border-radius:var(--rs);font-size:.8125rem;font-family:var(--f)}.fi:focus{outline:none;border-color:var(--blue)}
+.fsel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .6rem center;padding-right:1.75rem}
+.tl{display:grid;gap:.35rem}
+.ti{display:grid;grid-template-columns:auto 1fr auto auto;gap:.55rem;align-items:center;padding:.6rem .75rem;background:var(--white);border-radius:var(--rs);border:1px solid var(--g200)}
+.ti-i{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800}
+.ti-i.pass{background:var(--ok-l);color:var(--ok)}.ti-i.fail{background:var(--err-l);color:var(--err)}.ti-i.pend{background:var(--g100);color:var(--g500)}.ti-i.run{background:var(--bl);color:var(--blue);animation:p 1.2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.5}}
+.ti-n{font-weight:600;font-size:.75rem}.ti-n small{display:block;font-weight:500;color:var(--g500);font-size:.6rem}
+.ti-d{font-size:.6rem;font-weight:600;color:var(--g500);font-variant-numeric:tabular-nums}
+.ti-s{font-size:.5rem;font-weight:700;padding:.12rem .35rem;border-radius:999px;text-transform:uppercase}
+.ti-s.pass{background:var(--ok-l);color:var(--ok)}.ti-s.fail{background:var(--err-l);color:var(--err)}.ti-s.run{background:var(--bl);color:var(--blue)}.ti-s.pend{background:var(--g100);color:var(--g500)}
+.tc{margin-bottom:1.15rem}.tc-h{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:2px solid var(--orange);margin-bottom:.6rem}
+.tc-t{font-size:.85rem;font-weight:800}.tc-c{font-size:.7rem;font-weight:700;color:var(--g500)}
+.rsum{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1.25rem}
+.rb{text-align:center;padding:.85rem;border-radius:var(--r)}.rb.t{background:var(--bl)}.rb.p{background:var(--ok-l)}.rb.f{background:var(--err-l)}.rb.s{background:var(--warn-l)}
+.rb .n{font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums}.rb.t .n{color:var(--blue)}.rb.p .n{color:var(--ok)}.rb.f .n{color:var(--err)}.rb.s .n{color:var(--warn)}
+.rb .l{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);margin-top:.1rem}
+.log{background:#0f172a;border-radius:var(--r);padding:.85rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:#e2e8f0;max-height:300px;overflow-y:auto;line-height:1.7}
+.ll{display:flex;gap:.6rem}.lt{color:#475569;flex-shrink:0;font-variant-numeric:tabular-nums}.lm.ok{color:#4ade80}.lm.er{color:#f87171}.lm.wn{color:#fbbf24}.lm.in{color:#60a5fa}
+.live-tabs{display:flex;gap:3px;background:var(--g100);border-radius:var(--r);padding:3px;margin-bottom:.85rem}
+.lt-tab{padding:.45rem .75rem;border-radius:var(--rs);border:none;font-size:.75rem;font-weight:700;cursor:pointer;background:transparent;color:var(--g500);font-family:var(--f);flex:1;text-align:center;transition:all .2s}
+.lt-tab.active{background:var(--white);color:var(--blue);box-shadow:var(--sh)}
+.lp{display:none}.lp.active{display:block}
+.embed-bar{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;padding:.5rem .65rem;background:var(--white);border:1px solid var(--g200);border-radius:var(--rs)}
+.embed-url{flex:1;padding:.35rem .6rem;border:1.5px solid var(--g200);border-radius:5px;font-size:.75rem;font-family:var(--f)}.embed-url:focus{outline:none;border-color:var(--blue)}
+.embed-frame{width:100%;height:500px;border:2px solid var(--g200);border-radius:var(--r);background:var(--white)}
+.np{background:var(--white);border-radius:var(--r);border:1px solid var(--g200);padding:1.15rem}
+.ns{margin-top:.75rem;padding:.75rem;background:var(--g100);border-radius:var(--rs);font-size:.75rem;color:var(--g700)}.ns.on{background:var(--ok-l);color:var(--ok)}
+.emu-wrap{display:grid;grid-template-columns:1fr 320px;gap:1.15rem}@media(max-width:960px){.emu-wrap{grid-template-columns:1fr}}
+.emu-box{width:100%;height:480px;border:2px solid var(--g200);border-radius:var(--r);background:#1a1a2e;display:flex;align-items:center;justify-content:center}
+.phone{width:240px;height:420px;background:#111;border-radius:26px;border:3px solid #333;display:flex;flex-direction:column;align-items:center;padding:8px;position:relative;box-shadow:0 6px 30px rgba(0,0,0,.4)}
+.phone-notch{width:80px;height:16px;background:#111;border-radius:0 0 8px 8px;position:absolute;top:0;left:50%;transform:translateX(-50%)}
+.phone-island{width:76px;height:22px;background:#111;border-radius:11px;position:absolute;top:6px;left:50%;transform:translateX(-50%)}
+.phone-screen{width:100%;flex:1;background:#f0f0f0;border-radius:16px;margin-top:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--g500);text-align:center;padding:.75rem;overflow:hidden}
+.phone-screen.loaded{background:var(--surface)}
+.phone-bar{width:80px;height:3px;background:#444;border-radius:2px;margin-top:5px}
+.phone-nav{display:flex;gap:1rem;padding:.3rem;margin-top:5px}.pnb{width:7px;height:7px;border-radius:50%;background:#444}.pnb.h{width:20px;border-radius:3px}
+.net-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.85rem}
+.net-card{background:var(--white);border-radius:var(--r);padding:1.1rem;border:1px solid var(--g200)}
+.net-card h4{font-size:.8rem;font-weight:800;margin-bottom:.5rem}
+.net-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;font-size:.7rem;border-bottom:1px solid var(--g100)}.net-row:last-child{border:none}
+.net-val{font-weight:700;font-variant-numeric:tabular-nums}.net-val.good{color:var(--ok)}.net-val.warn{color:var(--warn)}.net-val.bad{color:var(--err)}
+.toggle{position:relative;width:34px;height:18px;flex-shrink:0}.toggle input{opacity:0;width:0;height:0}
+.toggle-s{position:absolute;inset:0;background:var(--g300);border-radius:9px;cursor:pointer;transition:background .2s}
+.toggle-s::before{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:var(--white);top:3px;left:3px;transition:transform .2s var(--eo)}
+.toggle input:checked+.toggle-s{background:var(--ok)}.toggle input:checked+.toggle-s::before{transform:translateX(16px)}
+@media(max-width:768px){.app{grid-template-columns:1fr}.sidebar{display:none}.rsum{grid-template-columns:repeat(2,1fr)}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--g300);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top-bar">
+<div class="brand"><img src="assets/logo-big.png" alt="Business One" class="brand-logo"><div class="brand-text"><h1>Test Environment</h1></div></div>
+<div class="platform-tabs"><button class="platform-tab active" data-platform="windows">Windows</button><button class="platform-tab" data-platform="android">Android</button><button class="platform-tab" data-platform="ios">iOS</button></div>
+</header>
+<nav class="sidebar">
+<div class="nav-section"><div class="nav-label">Overview</div><button class="nav-item active" data-page="dashboard"><i data-lucide="layout-dashboard" width="16" height="16"></i>Dashboard</button></div>
+<div class="nav-section"><div class="nav-label">Hardware</div><button class="nav-item" data-page="hardware-library"><i data-lucide="database" width="16" height="16"></i>Device Library<span class="nav-badge" id="hwC">0</span></button><button class="nav-item" data-page="virtual-hardware"><i data-lucide="cpu" width="16" height="16"></i>Virtual Devices</button><button class="nav-item" data-page="network-sim"><i data-lucide="wifi" width="16" height="16"></i>Network Sim</button></div>
+<div class="nav-section"><div class="nav-label">POS Testing</div><button class="nav-item" data-page="pos-connection"><i data-lucide="plug" width="16" height="16"></i>POS Connection</button><button class="nav-item" data-page="pos-live"><i data-lucide="monitor" width="16" height="16"></i>Live POS View</button><button class="nav-item" data-page="test-runner"><i data-lucide="play-circle" width="16" height="16"></i>Test Runner</button><button class="nav-item" data-page="results"><i data-lucide="bar-chart-3" width="16" height="16"></i>Results</button></div>
+<div class="sidebar-footer"><button class="run-btn" id="runBtn">&#9654; Run Full Test Suite</button></div>
+</nav>
+<main class="main">
+<div class="page active" id="page-dashboard">
+<div class="dash-grid">
+<div class="stat-card blue"><div class="label">Device Library</div><div class="value" id="dDev">0</div><div class="sub">Universal peripherals only</div></div>
+<div class="stat-card green"><div class="label">Passed</div><div class="value" id="dP">0</div><div class="sub">Ready</div></div>
+<div class="stat-card red"><div class="label">Failed</div><div class="value" id="dF">0</div><div class="sub">--</div></div>
+<div class="stat-card orange"><div class="label">Platform</div><div class="value" id="dPlat" style="font-size:1.25rem">Windows</div><div class="sub">Touch mode</div></div>
+</div>
+<h2 class="section-title">Quick Actions</h2>
+<div style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn p" onclick="nav('pos-live')">Launch Live POS</button><button class="btn a" onclick="nav('virtual-hardware')">Configure Hardware</button><button class="btn" onclick="nav('network-sim')">Network Simulation</button><button class="btn" onclick="nav('test-runner')">Run Tests</button></div>
+</div>
+<div class="page" id="page-hardware-library">
+<h2 class="section-title">Universal POS Hardware Library</h2>
+<p style="color:var(--g500);font-size:.75rem;margin:-.4rem 0 .85rem">Only universal, non-proprietary peripherals that work with any POS software.</p>
+<div class="hw-toolbar"><input class="hw-search" placeholder="Search..." id="hwS"><select class="hw-filter fsel" id="hwT"><option value="all">All Types</option><option value="printer">Printers</option><option value="drawer">Drawers</option><option value="display">Displays</option><option value="terminal">Terminals</option><option value="screen">POS Screens</option><option value="scanner">Scanners</option></select><select class="hw-filter fsel" id="hwConn"><option value="all">All Connections</option><option value="USB">USB</option><option value="Ethernet">Ethernet</option><option value="Serial">Serial</option><option value="Bluetooth">Bluetooth</option><option value="WiFi">WiFi</option><option value="RJ12">RJ12</option><option value="4G">4G</option></select></div>
+<table class="hw-table"><thead><tr><th>Type</th><th>Manufacturer</th><th>Model</th><th>Year</th><th>Connections</th><th>Protocol</th></tr></thead><tbody id="hwTB"></tbody></table>
+<div class="hw-pg"><span id="hwPI"></span><div><button onclick="hPg(-1)" id="hPv">&#8592;</button> <button onclick="hPg(1)" id="hNx">&#8594;</button></div></div>
+</div>
+<div class="page" id="page-virtual-hardware">
+<h2 class="section-title">Virtual Devices</h2>
+<div class="card-grid" id="vhG"></div>
+</div>
+<div class="page" id="page-network-sim">
+<h2 class="section-title">Network Simulation</h2>
+<p style="color:var(--g500);font-size:.75rem;margin:-.4rem 0 .85rem">Simulate router failover, latency, packet loss, and throttling. Tests how your POS handles network interruptions.</p>
+<div class="net-grid">
+<div class="net-card"><h4>Connection Status</h4>
+<div class="net-row"><span>Primary (WAN)</span><span class="net-val good" id="netPrimary">Connected</span></div>
+<div class="net-row"><span>Failover (4G LTE)</span><span class="net-val" id="netFailover" style="color:var(--g500)">Standby</span></div>
+<div class="net-row"><span>Active</span><span class="net-val good" id="netActive">Primary</span></div>
+<div class="net-row"><span>Uptime</span><span class="net-val">4h 23m</span></div>
+<div class="net-row"><span>Signal (4G)</span><span class="net-val">-67 dBm</span></div>
+</div>
+<div class="net-card"><h4>Simulation Controls</h4>
+<div style="display:grid;gap:.5rem;margin-top:.3rem">
+<button class="btn" onclick="simFailover()" style="width:100%">Trigger Failover (drop WAN)</button>
+<button class="btn" onclick="simFailback()" style="width:100%">Trigger Failback (restore WAN)</button>
+<button class="btn" onclick="simLatency()" style="width:100%">Inject Latency (+200ms)</button>
+<button class="btn" onclick="simPacketLoss()" style="width:100%">Packet Loss (10%)</button>
+<button class="btn" onclick="simThrottle()" style="width:100%">Throttle to 1 Mbps</button>
+<button class="btn p" onclick="simReset()" style="width:100%">Reset All</button>
+</div></div>
+<div class="net-card"><h4>Router Configuration</h4>
+<div class="ff"><label>Router Model</label><select class="fi fsel"><option>Cradlepoint E300 (5G, Retail)</option><option>Cradlepoint IBR900 (4G LTE-A)</option><option>Peplink Balance 20X (Dual WAN + 4G)</option><option>Peplink Balance One (Dual WAN)</option><option>Digi TX40 (4G LTE Industrial)</option><option>Digi EX15 (LTE Cat 4)</option><option>Generic 4G LTE Router</option><option>Generic 5G Router</option></select></div>
+<div class="ff"><label>Failover Timeout</label><input class="fi" value="10" type="number" min="1" max="60"> <span style="font-size:.6rem;color:var(--g500)">seconds</span></div>
+<div class="ff"><label>LAN Ports</label><input class="fi" value="4 (3xLAN + 1xWAN)" readonly></div>
+<div class="ff" style="display:flex;align-items:center;gap:.4rem;margin:0"><label class="toggle"><input type="checkbox" checked><span class="toggle-s"></span></label><span style="font-size:.7rem;font-weight:600">VPN Passthrough</span></div>
+</div>
+<div class="net-card"><h4>Network Metrics</h4>
+<div class="net-row"><span>Latency</span><span class="net-val good" id="netLat">12ms</span></div>
+<div class="net-row"><span>Download</span><span class="net-val good" id="netDL">450 Mbps</span></div>
+<div class="net-row"><span>Upload</span><span class="net-val good" id="netUL">50 Mbps</span></div>
+<div class="net-row"><span>Packet Loss</span><span class="net-val good" id="netPL">0%</span></div>
+<div class="net-row"><span>Jitter</span><span class="net-val good">2ms</span></div>
+</div>
+</div>
+</div>
+<div class="page" id="page-pos-connection">
+<h2 class="section-title">POS Connection</h2>
+<div class="conn-grid">
+<div class="panel"><h3>Local / Installed POS</h3><p>Any POS running locally or on LAN</p>
+<div class="ff"><label>Application Type</label><select class="fi fsel"><option>Select...</option><option>Windows Desktop App (.exe)</option><option>Web App (localhost URL)</option><option>Android App (via emulator)</option><option>iOS App (via simulator)</option></select></div>
+<div class="ff"><label>Path / URL</label><input class="fi" placeholder="C:\POS\app.exe or http://localhost:3001"></div>
+<div class="ff"><label>API Port</label><input class="fi" value="8080"></div>
+<button class="btn p" style="width:100%;padding:.6rem" onclick="addLog('ok','[POS] Local connected')">Connect</button></div>
+<div class="panel"><h3>Cloud POS</h3><p>Any cloud-hosted POS via API</p>
+<div class="ff"><label>API Base URL</label><input class="fi" placeholder="https://api.yourpos.com/v1"></div>
+<div class="ff"><label>API Key / Token</label><input class="fi" type="password" placeholder="sk_live_..."></div>
+<div class="ff"><label>Location / Store ID</label><input class="fi" placeholder="store_abc123"></div>
+<button class="btn p" style="width:100%;padding:.6rem" onclick="addLog('ok','[POS] Cloud authenticated')">Authenticate</button></div>
+</div>
+</div>
+<div class="page" id="page-pos-live">
+<h2 class="section-title">Live POS View</h2>
+<div class="live-tabs">
+<button class="lt-tab active" onclick="sLive(this,'web')">Web / Cloud</button>
+<button class="lt-tab" onclick="sLive(this,'win')">Windows App</button>
+<button class="lt-tab" onclick="sLive(this,'android')">Android</button>
+<button class="lt-tab" onclick="sLive(this,'ios')">iOS</button>
+</div>
+<div class="lp active" id="live-web">
+<div class="embed-bar"><input class="embed-url" id="eUrl" placeholder="POS URL (http://localhost:8080)"><button class="btn p" onclick="document.getElementById('eF').src=document.getElementById('eUrl').value">Load</button><button class="btn" onclick="document.getElementById('eF').src=''">Clear</button></div>
+<iframe id="eF" class="embed-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+</div>
+<div class="lp" id="live-win">
+<div class="np"><h3 style="font-weight:800;margin-bottom:.35rem">Windows App Launcher</h3><p style="font-size:.75rem;color:var(--g500);margin-bottom:.85rem">Bridge intercepts COM ports, USB-HID, and network I/O</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem"><div class="ff"><label>Executable</label><input class="fi" id="wExe" placeholder="C:\POS\register.exe"></div><div class="ff"><label>Arguments</label><input class="fi" placeholder="--fullscreen --touch"></div></div>
+<div style="display:flex;gap:.5rem;margin:.6rem 0;font-size:.7rem;flex-wrap:wrap"><span style="display:flex;align-items:center;gap:.3rem"><label class="toggle"><input type="checkbox" checked><span class="toggle-s"></span></label>COM</span><span style="display:flex;align-items:center;gap:.3rem"><label class="toggle"><input type="checkbox" checked><span class="toggle-s"></span></label>USB-HID</span><span style="display:flex;align-items:center;gap:.3rem"><label class="toggle"><input type="checkbox" checked><span class="toggle-s"></span></label>Network</span></div>
+<div style="display:flex;gap:.5rem"><button class="btn p" onclick="lWin()">Launch</button><button class="btn" onclick="sWin()">Stop</button></div>
+<div class="ns" id="wSt">Ready</div></div>
+</div>
+<div class="lp" id="live-android">
+<div class="emu-wrap"><div class="np"><h3 style="font-weight:800;margin-bottom:.35rem">Android Emulator</h3><p style="font-size:.75rem;color:var(--g500);margin-bottom:.85rem">ADB routes virtual Bluetooth, NFC, USB</p>
+<div class="ff"><label>APK / Package</label><input class="fi" id="aApk" placeholder="C:\apks\pos.apk"></div>
+<div class="ff"><label>Device</label><select class="fi fsel" id="aDev"><option>Pixel Tablet - 10.95"</option><option>Samsung Tab A8 - 10.5"</option><option>Sunmi T2s - 15.6"</option><option>PAX A920 Pro - 5.5"</option><option>Generic 10" Tablet</option></select></div>
+<div class="ff"><label>Android</label><select class="fi fsel"><option>14 (API 34)</option><option>13 (API 33)</option><option>12 (API 31)</option><option>11 (API 30)</option></select></div>
+<div style="display:flex;gap:.5rem"><button class="btn p" onclick="lA()">Start</button><button class="btn" onclick="sA()">Stop</button></div>
+<div class="ns" id="aSt">Not running</div></div>
+<div class="emu-box"><div class="phone"><div class="phone-notch"></div><div class="phone-screen" id="aScr">No app</div><div class="phone-nav"><div class="pnb"></div><div class="pnb h"></div><div class="pnb"></div></div></div></div></div>
+</div>
+<div class="lp" id="live-ios">
+<div class="emu-wrap"><div class="np"><h3 style="font-weight:800;margin-bottom:.35rem">iOS Simulator</h3><p style="font-size:.75rem;color:var(--g500);margin-bottom:.85rem">Routes BLE, Tap to Pay, external display</p>
+<div class="ff"><label>IPA / Bundle ID</label><input class="fi" id="iApp" placeholder="com.yourpos.register"></div>
+<div class="ff"><label>Device</label><select class="fi fsel" id="iDev"><option>iPad Pro 12.9" (6th gen)</option><option>iPad 10th gen</option><option>iPad mini 6</option><option>iPhone 15 Pro Max</option><option>iPhone SE 3</option></select></div>
+<div class="ff"><label>iOS</label><select class="fi fsel"><option>18.0</option><option>17.5</option><option>17.0</option><option>16.4</option></select></div>
+<div style="display:flex;gap:.5rem"><button class="btn p" onclick="lI()">Boot</button><button class="btn" onclick="sI()">Stop</button></div>
+<div class="ns" id="iSt">Not running</div></div>
+<div class="emu-box"><div class="phone" style="border-radius:32px;width:220px;height:440px"><div class="phone-island"></div><div class="phone-screen" id="iScr" style="border-radius:20px;margin-top:16px">No app</div><div class="phone-bar"></div></div></div></div>
+</div>
+</div>
+<div class="page" id="page-test-runner"><h2 class="section-title">Test Suite</h2><div id="tC"></div></div>
+<div class="page" id="page-results"><h2 class="section-title">Results</h2>
+<div class="rsum"><div class="rb t"><div class="n" id="rT">0</div><div class="l">Total</div></div><div class="rb p"><div class="n" id="rP">0</div><div class="l">Passed</div></div><div class="rb f"><div class="n" id="rF">0</div><div class="l">Failed</div></div><div class="rb s"><div class="n" id="rS">0</div><div class="l">Skipped</div></div></div>
+<h3 class="section-title">Log</h3><div class="log" id="logC"><div class="ll"><span class="lt">--:--:--</span><span class="lm in">Ready</span></div></div></div>
+</main>
+</div>
+<script>
+const DB=[];function a(t,items){items.forEach(d=>DB.push({type:t,...d}))}
+a('printer',[
+{m:'Epson',n:'TM-T88VII',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'Epson',n:'TM-T88VI',y:2021,c:['USB','Ethernet','Serial'],p:'ESC/POS'},
+{m:'Epson',n:'TM-m30III',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'Epson',n:'TM-m50II',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
+{m:'Epson',n:'TM-T20III',y:2021,c:['USB','Ethernet'],p:'ESC/POS'},
+{m:'Epson',n:'TM-L100',y:2022,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
+{m:'Epson',n:'TM-U220',y:2021,c:['USB','Serial','Ethernet'],p:'ESC/POS Impact'},
+{m:'Epson',n:'TM-H6000VI',y:2022,c:['USB','Serial','Ethernet'],p:'ESC/POS + MICR'},
+{m:'Star Micronics',n:'mC-Print3',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT/ESC-POS'},
+{m:'Star Micronics',n:'TSP143IV',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT/ESC-POS'},
+{m:'Star Micronics',n:'mC-Label3',y:2023,c:['USB','WiFi','Bluetooth'],p:'StarPRNT'},
+{m:'Star Micronics',n:'SP700',y:2021,c:['USB','Serial','Ethernet'],p:'Star Line Mode'},
+{m:'Star Micronics',n:'mC-Print2',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT'},
+{m:'Bixolon',n:'SRP-350plusV',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'Bixolon',n:'SRP-Q300II',y:2024,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'Bixolon',n:'SRP-382',y:2022,c:['USB','Ethernet','Bluetooth'],p:'ESC/POS'},
+{m:'Bixolon',n:'SRP-330III',y:2022,c:['USB','Ethernet'],p:'ESC/POS'},
+{m:'Citizen',n:'CT-E651',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'Citizen',n:'CT-S4500',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
+{m:'Citizen',n:'CT-E301',y:2021,c:['USB','Ethernet'],p:'ESC/POS'},
+{m:'Citizen',n:'CT-S801III',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
+{m:'HP',n:'A799 II',y:2021,c:['USB','Serial','Ethernet'],p:'ESC/POS + OPOS'},
+{m:'Zebra',n:'ZQ630 Plus',y:2023,c:['USB','Bluetooth','WiFi'],p:'ZPL/CPCL'},
+{m:'Zebra',n:'ZQ521',y:2022,c:['USB','Bluetooth','WiFi'],p:'ZPL/CPCL'},
+{m:'Seiko',n:'RP-F10',y:2022,c:['USB','Bluetooth'],p:'ESC/POS'},
+{m:'Custom',n:'KUBE II',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
+{m:'Sam4s',n:'ELLIX 50',y:2022,c:['USB','Ethernet','Serial'],p:'ESC/POS'}]);
+a('drawer',[
+{m:'APG',n:'Vasario VB320-BL1616',y:2022,c:['RJ12'],p:'DK Port (Printer Kick)'},
+{m:'APG',n:'Series 4000 JB320',y:2021,c:['RJ12','USB'],p:'DK Port / USB-HID'},
+{m:'APG',n:'ECD330-BLK',y:2022,c:['RJ12','USB-HID'],p:'DK Port / NetPRO'},
+{m:'APG',n:'Vasario VBS320',y:2023,c:['RJ12'],p:'DK Port'},
+{m:'MMF',n:'Val-u Line',y:2021,c:['RJ12'],p:'DK Port'},
+{m:'MMF',n:'Heritage 225',y:2023,c:['RJ12','USB','Ethernet'],p:'NetPRO'},
+{m:'MMF',n:'Advantage ADV-C2',y:2022,c:['RJ12','USB'],p:'DK Port / USB-HID'},
+{m:'Star Micronics',n:'CD3-1616',y:2022,c:['RJ12'],p:'DK Port (24V)'},
+{m:'Star Micronics',n:'CD4-1616',y:2023,c:['RJ12'],p:'DK Port (24V)'},
+{m:'Posiflex',n:'CR-4100',y:2021,c:['RJ12','USB'],p:'DK Port / USB-HID'},
+{m:'HP',n:'Standard Duty Drawer',y:2021,c:['RJ12'],p:'DK Port'},
+{m:'NCR',n:'RealPOS Compact',y:2021,c:['RJ12','USB'],p:'DK Port / OPOS'},
+{m:'Safescan',n:'HD-4646S',y:2022,c:['RJ12'],p:'DK Port'}]);
+a('display',[
+{m:'Logic Controls',n:'LD9000',y:2021,c:['USB-HID','Serial'],p:'OPOS / ESC'},
+{m:'Logic Controls',n:'LD9900',y:2022,c:['USB-HID'],p:'OPOS Line Display'},
+{m:'Posiflex',n:'PD-2608UE',y:2022,c:['USB','Serial'],p:'ESC/POS Subset'},
+{m:'Posiflex',n:'PD-300',y:2023,c:['USB-HID'],p:'OPOS'},
+{m:'HP',n:'Engage One Top Display',y:2023,c:['USB-HID'],p:'USB HID / Web'},
+{m:'Epson',n:'DM-D30',y:2022,c:['USB'],p:'ESC/POS Display'},
+{m:'Elo Touch',n:'10" Customer Display',y:2023,c:['HDMI','USB'],p:'Secondary Monitor'},
+{m:'NCR',n:'RealPOS 5975',y:2021,c:['USB','Serial'],p:'OPOS Line Display'},
+{m:'Aures',n:'OLC 10.1"',y:2022,c:['HDMI','USB'],p:'Web Display'}]);
+a('terminal',[
+{m:'Verifone',n:'P400',y:2021,c:['Ethernet','WiFi'],p:'Semi-integrated Cloud API'},
+{m:'Verifone',n:'M400',y:2022,c:['Ethernet','WiFi'],p:'Semi-integrated Cloud API'},
+{m:'Verifone',n:'P630',y:2023,c:['USB','Ethernet'],p:'Verifone Cloud / VIPA'},
+{m:'Verifone',n:'M424',y:2024,c:['Ethernet','WiFi','USB'],p:'V/OS Android'},
+{m:'Verifone',n:'E285',y:2022,c:['WiFi','Bluetooth','4G'],p:'Cloud API'},
+{m:'Verifone',n:'V240m',y:2023,c:['WiFi','Bluetooth','4G'],p:'Verifone Cloud'},
+{m:'Ingenico',n:'Lane/3000',y:2022,c:['Ethernet','USB'],p:'Telium TETRA / Axium'},
+{m:'Ingenico',n:'Move/5000',y:2022,c:['WiFi','Bluetooth','4G'],p:'Axium OS'},
+{m:'Ingenico',n:'AXIUM DX4000',y:2023,c:['WiFi','Bluetooth','Ethernet'],p:'Android / Axium'},
+{m:'Ingenico',n:'AXIUM RX5000',y:2025,c:['Ethernet','USB'],p:'Android 11 / Axium'},
+{m:'Ingenico',n:'Link/2500',y:2021,c:['Bluetooth'],p:'mPOS SDK'},
+{m:'PAX',n:'A920 Pro',y:2022,c:['WiFi','4G','Ethernet'],p:'PayDroid / Android'},
+{m:'PAX',n:'A80',y:2021,c:['Ethernet','WiFi'],p:'POSLINK Semi-integrated'},
+{m:'PAX',n:'Aries8',y:2023,c:['WiFi','Ethernet','4G'],p:'PayDroid SmartPOS'},
+{m:'PAX',n:'A77',y:2024,c:['Ethernet','WiFi'],p:'POSLINK / Android'},
+{m:'PAX',n:'A35',y:2023,c:['Ethernet','USB'],p:'POSLINK PIN Pad'},
+{m:'Dejavoo',n:'QD4',y:2023,c:['WiFi','Ethernet','4G'],p:'DejaConnect API'},
+{m:'Dejavoo',n:'QD2',y:2022,c:['Ethernet','WiFi'],p:'DejaConnect API'},
+{m:'Castles',n:'S1F2',y:2022,c:['WiFi','Bluetooth','4G'],p:'CAPT Protocol'},
+{m:'Castles',n:'Saturn S1000',y:2023,c:['Ethernet','WiFi'],p:'UPT Protocol'},
+{m:'Newland',n:'N950',y:2022,c:['WiFi','4G','Bluetooth'],p:'SmartPOS Android'},
+{m:'Newland',n:'N910 Pro',y:2023,c:['WiFi','4G','Bluetooth','Ethernet'],p:'SmartPOS Android'},
+{m:'Worldline',n:'YOMANI XR',y:2022,c:['Ethernet','USB'],p:'ep2 / nexo'},
+{m:'Worldline',n:'VALINA',y:2022,c:['WiFi','4G','Ethernet'],p:'nexo / Android'}]);
+a('screen',[
+{m:'Elo Touch',n:'15" I-Series 4',y:2023,c:['HDMI','USB','Ethernet'],p:'PCAP / EloCMS'},
+{m:'Elo Touch',n:'22" I-Series 4',y:2023,c:['HDMI','USB','Ethernet'],p:'PCAP / EloCMS'},
+{m:'Elo Touch',n:'E-Series 15.6"',y:2022,c:['HDMI','VGA','USB'],p:'PCAP Touch'},
+{m:'HP',n:'Engage One Prime',y:2023,c:['USB-C','Ethernet','WiFi'],p:'Windows IoT / Android'},
+{m:'HP',n:'Engage Flex Pro II',y:2022,c:['USB-C','HDMI','Ethernet'],p:'Windows 11 IoT'},
+{m:'HP',n:'RP9 G1',y:2021,c:['USB','HDMI','Ethernet'],p:'Windows 10 IoT LTSC'},
+{m:'NCR',n:'CX7',y:2023,c:['Ethernet','WiFi','USB-C'],p:'Android / NCR Commerce'},
+{m:'NCR',n:'RealPOS XR7',y:2022,c:['Ethernet','USB','Serial'],p:'Windows IoT / OPOS'},
+{m:'Posiflex',n:'HS-3515A',y:2022,c:['USB','Ethernet','Serial'],p:'Windows 10 IoT'},
+{m:'Posiflex',n:'MT-4220W',y:2023,c:['WiFi','Ethernet','USB-C'],p:'Android 12'},
+{m:'Aures',n:'Yuno 15"',y:2022,c:['USB','HDMI','Ethernet'],p:'Windows / Linux / Android'},
+{m:'Aures',n:'Nino II',y:2023,c:['USB-C','WiFi','Ethernet'],p:'Windows / Android'},
+{m:'Diebold Nixdorf',n:'BEETLE /M-III',y:2022,c:['USB','Ethernet','Serial'],p:'Windows IoT / OPOS'},
+{m:'Toshiba',n:'TCxWave 6140',y:2021,c:['Ethernet','USB','Serial'],p:'Windows IoT / JavaPOS'},
+{m:'Sunmi',n:'T2s',y:2023,c:['WiFi','Ethernet','4G'],p:'Sunmi OS (Android)'},
+{m:'Sunmi',n:'D3 Mini',y:2024,c:['WiFi','Ethernet'],p:'Sunmi OS'},
+{m:'iMin',n:'D4-503',y:2023,c:['WiFi','Ethernet'],p:'Android 13'},
+{m:'Hisense',n:'HK718',y:2022,c:['Ethernet','WiFi','USB'],p:'Windows / Android'}]);
+a('scanner',[
+{m:'Honeywell',n:'Voyager 1472g',y:2022,c:['USB-HID'],p:'Keyboard Wedge'},
+{m:'Honeywell',n:'Genesis XP 7680g',y:2023,c:['USB-HID','Serial'],p:'HID / RS232'},
+{m:'Honeywell',n:'Solaris 7980g',y:2022,c:['USB-HID'],p:'Presentation Scanner'},
+{m:'Zebra',n:'DS9308',y:2022,c:['USB-HID'],p:'Keyboard Wedge / OPOS'},
+{m:'Zebra',n:'DS2208',y:2021,c:['USB-HID','Serial'],p:'HID / RS232'},
+{m:'Zebra',n:'DS4608',y:2022,c:['USB-HID'],p:'Keyboard Wedge'},
+{m:'Datalogic',n:'Gryphon GD4520',y:2023,c:['USB-HID','Serial'],p:'HID / RS232'},
+{m:'Datalogic',n:'Magellan 1500i',y:2022,c:['USB-HID'],p:'Presentation / OPOS'},
+{m:'Socket Mobile',n:'SocketScan S740',y:2022,c:['Bluetooth'],p:'BLE HID'},
+{m:'Socket Mobile',n:'DuraScan D750',y:2023,c:['Bluetooth'],p:'BLE HID'}]);
+
+const PS=20;let pg=0,fl=[...DB];
+function rH(){const s=pg*PS,it=fl.slice(s,s+PS);document.getElementById('hwTB').innerHTML=it.map(d=>`<tr><td><span class="badge ${d.type}">${d.type}</span></td><td style="font-weight:600">${d.m}</td><td>${d.n}</td><td>${d.y}</td><td>${d.c.map(x=>`<span class="tag">${x}</span>`).join('')}</td><td style="font-size:.65rem">${d.p}</td></tr>`).join('');document.getElementById('hwPI').textContent=`${s+1}-${Math.min(s+PS,fl.length)} of ${fl.length}`;document.getElementById('hPv').disabled=pg===0;document.getElementById('hNx').disabled=s+PS>=fl.length;document.getElementById('hwC').textContent=DB.length;document.getElementById('dDev').textContent=DB.length}
+function hF(){const q=document.getElementById('hwS').value.toLowerCase(),t=document.getElementById('hwT').value,c=document.getElementById('hwConn').value;fl=DB.filter(d=>(t==='all'||d.type===t)&&(c==='all'||d.c.some(x=>x.includes(c)))&&(!q||d.m.toLowerCase().includes(q)||d.n.toLowerCase().includes(q)||d.p.toLowerCase().includes(q)));pg=0;rH()}
+function hPg(d){pg+=d;rH()}
+document.getElementById('hwS')?.addEventListener('input',hF);document.getElementById('hwT')?.addEventListener('change',hF);document.getElementById('hwConn')?.addEventListener('change',hF);
+
+const vD=[{name:'Receipt Printer',dev:'Epson TM-T88VII',conn:'USB ESC/POS',det:'COM3 | 115200 8N1',on:true},{name:'Cash Drawer',dev:'APG Vasario VB320',conn:'RJ12 DK Port',det:'ESC p 0 25 250 | Pin 10',on:true},{name:'Payment Terminal',dev:'Verifone P400',conn:'Ethernet TLS',det:'192.168.1.50:8443 JSON-RPC',on:true},{name:'Customer Display',dev:'Logic Controls LD9000',conn:'USB-HID OPOS',det:'2x20 CP437',on:true},{name:'Barcode Scanner',dev:'Honeywell 1472g',conn:'USB-HID Wedge',det:'UPC-A, EAN-13, Code128, QR',on:true},{name:'Kitchen Printer',dev:'Star SP700',conn:'Ethernet 9100',det:'Star Line Mode | Impact',on:false},{name:'Label Printer',dev:'Zebra ZQ630',conn:'WiFi ZPL',det:'4" 203dpi ZPL II',on:false},{name:'POS Touchscreen',dev:'Elo Touch 15"',conn:'HDMI+USB PCAP',det:'1920x1080 10pt',on:false},{name:'Scale',dev:'CAS SW-50',conn:'Serial RS232',det:'9600 7E1',on:false}];
+function rV(){document.getElementById('vhG').innerHTML=vD.map((d,i)=>`<div class="card ${d.on?'on':''}"><div class="card-head"><span class="card-title">${d.name}</span><span class="card-pill ${d.on?'on':'off'}">${d.on?'Active':'Idle'}</span></div><div class="card-meta"><strong>${d.dev}</strong><br>${d.conn}<br>${d.det}</div><div class="card-actions"><button class="btn ${d.on?'p':'a'}" onclick="vD[${i}].on=!vD[${i}].on;rV()">${d.on?'Test':'Activate'}</button><button class="btn">Config</button><button class="btn">Logs</button></div></div>`).join('')}
+
+function simFailover(){document.getElementById('netPrimary').textContent='Disconnected';document.getElementById('netPrimary').className='net-val bad';document.getElementById('netFailover').textContent='Active';document.getElementById('netFailover').className='net-val good';document.getElementById('netActive').textContent='4G Failover';document.getElementById('netActive').className='net-val warn';document.getElementById('netLat').textContent='45ms';document.getElementById('netLat').className='net-val warn';document.getElementById('netDL').textContent='85 Mbps';document.getElementById('netUL').textContent='25 Mbps';addLog('wn','[NET] WAN dropped - failover to 4G')}
+function simFailback(){document.getElementById('netPrimary').textContent='Connected';document.getElementById('netPrimary').className='net-val good';document.getElementById('netFailover').textContent='Standby';document.getElementById('netFailover').className='net-val';document.getElementById('netFailover').style.color='var(--g500)';document.getElementById('netActive').textContent='Primary';document.getElementById('netActive').className='net-val good';document.getElementById('netLat').textContent='12ms';document.getElementById('netLat').className='net-val good';document.getElementById('netDL').textContent='450 Mbps';document.getElementById('netUL').textContent='50 Mbps';addLog('ok','[NET] WAN restored - failback complete')}
+function simLatency(){document.getElementById('netLat').textContent='212ms';document.getElementById('netLat').className='net-val bad';addLog('wn','[NET] Latency +200ms')}
+function simPacketLoss(){document.getElementById('netPL').textContent='10%';document.getElementById('netPL').className='net-val bad';addLog('wn','[NET] Packet loss 10%')}
+function simThrottle(){document.getElementById('netDL').textContent='1 Mbps';document.getElementById('netDL').className='net-val bad';document.getElementById('netUL').textContent='0.5 Mbps';document.getElementById('netUL').className='net-val bad';addLog('wn','[NET] Throttled to 1 Mbps')}
+function simReset(){document.getElementById('netPrimary').textContent='Connected';document.getElementById('netPrimary').className='net-val good';document.getElementById('netFailover').textContent='Standby';document.getElementById('netFailover').className='net-val';document.getElementById('netFailover').style.color='var(--g500)';document.getElementById('netActive').textContent='Primary';document.getElementById('netActive').className='net-val good';document.getElementById('netLat').textContent='12ms';document.getElementById('netLat').className='net-val good';document.getElementById('netDL').textContent='450 Mbps';document.getElementById('netDL').className='net-val good';document.getElementById('netUL').textContent='50 Mbps';document.getElementById('netUL').className='net-val good';document.getElementById('netPL').textContent='0%';document.getElementById('netPL').className='net-val good';addLog('ok','[NET] Reset')}
+
+function sLive(btn,m){document.querySelectorAll('.lt-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.lp').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById('live-'+m).classList.add('active')}
+function lWin(){document.getElementById('wSt').className='ns on';document.getElementById('wSt').innerHTML=`<strong>Running</strong> | PID: ${(Math.random()*50000+10000)|0} | Bridge active`}
+function sWin(){document.getElementById('wSt').className='ns';document.getElementById('wSt').textContent='Stopped'}
+function lA(){const d=document.getElementById('aDev').value.split('-')[0].trim();document.getElementById('aSt').className='ns on';document.getElementById('aSt').textContent='Running: '+d;document.getElementById('aScr').className='phone-screen loaded';document.getElementById('aScr').innerHTML=`<div style="text-align:center"><strong style="font-size:.7rem">${document.getElementById('aApk').value||'POS App'}</strong><br><span style="font-size:.55rem;color:var(--ok)">Active</span></div>`}
+function sA(){document.getElementById('aSt').className='ns';document.getElementById('aSt').textContent='Stopped';document.getElementById('aScr').className='phone-screen';document.getElementById('aScr').textContent='No app'}
+function lI(){const d=document.getElementById('iDev').value.split('(')[0].trim();document.getElementById('iSt').className='ns on';document.getElementById('iSt').textContent='Booted: '+d;document.getElementById('iScr').className='phone-screen loaded';document.getElementById('iScr').innerHTML=`<div style="text-align:center"><strong style="font-size:.7rem">${document.getElementById('iApp').value||'POS App'}</strong><br><span style="font-size:.55rem;color:var(--ok)">Active</span></div>`}
+function sI(){document.getElementById('iSt').className='ns';document.getElementById('iSt').textContent='Stopped';document.getElementById('iScr').className='phone-screen';document.getElementById('iScr').textContent='No app'}
+
+const S=[{name:'Peripheral Communication',tests:[{n:'Printer: ESC/POS init',d:'ESC @ ACK',ms:[60,120]},{n:'Printer: Print+cut',d:'GS V 66 3',ms:[70,150]},{n:'Printer: Paper status',d:'DLE EOT 1',ms:[20,50]},{n:'Drawer: DK kick',d:'ESC p 0 25 250',ms:[8,20]},{n:'Drawer: Sensor',d:'Pin 10 poll',ms:[500,2000],f:.12},{n:'Terminal: TLS',d:'Cert validation',ms:[100,200]},{n:'Terminal: Sale',d:'JSON-RPC',ms:[150,400]},{n:'Terminal: Timeout',d:'30s no ACK',ms:[400,600],f:.08},{n:'Display: Write',d:'2x20 chars',ms:[8,20]},{n:'Scanner: Decode',d:'UPC-A HID',ms:[3,10]}]},{name:'POS Core Functions',tests:[{n:'Sale: Add item',d:'SKU lookup',ms:[5,15]},{n:'Sale: Discount',d:'% off',ms:[3,10]},{n:'Sale: Tax',d:'Multi-rate',ms:[5,15]},{n:'Payment: Cash',d:'Change calc',ms:[3,10]},{n:'Payment: Card',d:'Terminal req',ms:[200,500]},{n:'Payment: Timeout',d:'No response',ms:[400,600],f:.08},{n:'Payment: Split',d:'Cash+card',ms:[50,150]},{n:'Refund: Full',d:'Void+reverse',ms:[100,250]},{n:'Receipt: Format',d:'Fields check',ms:[30,80],f:.06},{n:'Receipt: Print',d:'ESC/POS',ms:[60,150]},{n:'Shift: Open/Close',d:'Z-report',ms:[50,120]},{n:'Employee: PIN',d:'Auth token',ms:[60,150]}]},{name:'Backend & Network',tests:[{n:'API: Health',d:'GET /health',ms:[15,50]},{n:'API: Auth',d:'Key check',ms:[40,100]},{n:'API: Catalog sync',d:'Full pull',ms:[300,600]},{n:'API: Order submit',d:'POST order',ms:[100,250]},{n:'WS: Connect',d:'Upgrade+auth',ms:[100,250]},{n:'Offline: Queue',d:'IndexedDB',ms:[5,20]},{n:'Offline: Sync',d:'Flush outbox',ms:[150,400]},{n:'Offline: Conflict',d:'Server-wins',ms:[100,300]},{n:'Network: Failover',d:'POS survives WAN drop',ms:[200,500]},{n:'Network: Latency',d:'Terminal at 200ms',ms:[200,400],f:.05},{n:'Network: Packet loss',d:'Retry works',ms:[150,350]}]}];
+
+function rT(){document.getElementById('tC').innerHTML=S.map(s=>`<div class="tc"><div class="tc-h"><span class="tc-t">${s.name}</span><span class="tc-c">${s.tests.length}</span></div><div class="tl">${s.tests.map((t,i)=>`<div class="ti" id="t${s.name.replace(/\W/g,'')}-${i}"><div class="ti-i pend">&#9675;</div><div class="ti-n">${t.n}<small>${t.d}</small></div><div class="ti-d">--</div><div class="ti-s pend">Pending</div></div>`).join('')}</div></div>`).join('')}
+
+async function run(){const b=document.getElementById('runBtn');b.textContent='Running...';b.style.background='var(--orange)';document.getElementById('logC').innerHTML='';let p=0,f=0;addLog('in','[INIT] Business One Test Environment');addLog('in','[PLATFORM] '+document.querySelector('.platform-tab.active')?.textContent);for(const s of S){addLog('in','[SUITE] '+s.name);for(let i=0;i<s.tests.length;i++){const t=s.tests[i],el=document.getElementById('t'+s.name.replace(/\W/g,'')+'-'+i);if(el){el.querySelector('.ti-i').className='ti-i run';el.querySelector('.ti-i').textContent='...'}const dur=Math.round(t.ms[0]+Math.random()*(t.ms[1]-t.ms[0]));const ok=Math.random()>(t.f||0);await new Promise(r=>setTimeout(r,Math.min(dur,100)));if(ok){p++;if(el){el.querySelector('.ti-i').className='ti-i pass';el.querySelector('.ti-i').textContent='\u2713';el.querySelector('.ti-s').className='ti-s pass';el.querySelector('.ti-s').textContent='Pass';el.querySelector('.ti-d').textContent=dur+'ms'}addLog('ok','\u2713 '+t.n+' ('+dur+'ms)')}else{f++;if(el){el.querySelector('.ti-i').className='ti-i fail';el.querySelector('.ti-i').textContent='\u2717';el.querySelector('.ti-s').className='ti-s fail';el.querySelector('.ti-s').textContent='Fail';el.querySelector('.ti-d').textContent=dur+'ms'}addLog('er','\u2717 '+t.n)}}}addLog('wn','[DONE] '+p+'/'+(p+f)+' passed | '+f+' failed');document.getElementById('rT').textContent=p+f;document.getElementById('rP').textContent=p;document.getElementById('rF').textContent=f;document.getElementById('dP').textContent=p;document.getElementById('dF').textContent=f;b.textContent='\u2713 '+p+'/'+(p+f);b.style.background='var(--ok)';setTimeout(function(){b.textContent='\u25B6 Run Full Test Suite';b.style.background=''},4000)}
+
+function addLog(t,m){var el=document.getElementById('logC');var cls={ok:'ok',er:'er',wn:'wn',in:'in'}[t]||'in';el.innerHTML+='<div class="ll"><span class="lt">'+new Date().toLocaleTimeString('en-US',{hour12:false})+'</span><span class="lm '+cls+'">'+m+'</span></div>';el.scrollTop=el.scrollHeight}
+
+function nav(p){document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active')});document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});var btn=document.querySelector('[data-page="'+p+'"]');if(btn)btn.classList.add('active');var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active')}
+document.querySelectorAll('.nav-item').forEach(function(b){b.addEventListener('click',function(){nav(b.dataset.page)})});
+document.querySelectorAll('.platform-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.platform-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');document.getElementById('dPlat').textContent=t.textContent})});
+document.getElementById('runBtn').addEventListener('click',run);
+rH();rV();rT();if(window.lucide)lucide.createIcons();
+</script>
+</body>
+</html>

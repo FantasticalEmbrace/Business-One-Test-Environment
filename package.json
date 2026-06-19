@@ -1,0 +1,68 @@
+{
+  "name": "business-one-test-environment",
+  "version": "1.0.0",
+  "description": "Business One POS Test Environment — Universal POS testing with virtual hardware",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win",
+    "build:installer": "electron-builder --win nsis",
+    "build:portable": "electron-builder --win portable"
+  },
+  "dependencies": {
+    "serialport": "^12.0.0",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.0"
+  },
+  "build": {
+    "appId": "com.businessone.testenvironment",
+    "productName": "Business One Test Environment",
+    "copyright": "Copyright © 2026 Business One",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "bridge-service.js",
+      "business-one-test-environment.html",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "artifactName": "BusinessOneTestEnvironment-Setup-${version}.${ext}",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Business One Test Environment",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "BusinessOneTestEnvironment-Portable-${version}.${ext}"
+    }
+  },
+  "keywords": ["pos", "testing", "hardware", "emulator"],
+  "author": "Business One",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
