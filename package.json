@@ -1,14 +1,16 @@
 {
   "name": "business-one-test-environment",
-  "version": "1.0.0",
+  "version": "1.0.18",
   "description": "Business One POS Test Environment — Universal POS testing with virtual hardware",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "build": "electron-builder --win",
-    "build:installer": "electron-builder --win nsis",
-    "build:portable": "electron-builder --win portable"
+    "icons": "node scripts/build-icons.js",
+    "device-library": "node scripts/generate-device-library.js",
+    "build": "npm run device-library && npm run icons && electron-builder --win --dir && node scripts/embed-icon.js && electron-builder --win nsis --prepackaged dist/win-unpacked",
+    "build:installer": "npm run build",
+    "build:portable": "npm run icons && electron-builder --win portable"
   },
   "dependencies": {
     "serialport": "^12.0.0",
@@ -16,7 +18,10 @@
   },
   "devDependencies": {
     "electron": "^33.0.0",
-    "electron-builder": "^25.1.0"
+    "electron-builder": "^25.1.0",
+    "rcedit": "^4.0.1",
+    "sharp": "^0.33.5",
+    "to-ico": "^1.1.5"
   },
   "build": {
     "appId": "com.businessone.testenvironment",
@@ -30,8 +35,20 @@
       "preload.js",
       "bridge-service.js",
       "business-one-test-environment.html",
+      "device-library-data.js",
+      "device-ui.js",
       "assets/**/*",
       "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/icon.ico",
+        "to": "icon.ico"
+      },
+      {
+        "from": "assets/logo-big.png",
+        "to": "logo-big.png"
+      }
     ],
     "win": {
       "target": [
@@ -46,10 +63,12 @@
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": true,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false,
       "shortcutName": "Business One Test Environment",
+      "include": "build/installer.nsh",
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
       "installerHeaderIcon": "assets/icon.ico"

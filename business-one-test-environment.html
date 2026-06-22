@@ -37,16 +37,53 @@
 .hw-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--g200)}
 .hw-table th{text-align:left;padding:.6rem .75rem;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);background:var(--g100);border-bottom:1px solid var(--g200)}
 .hw-table td{padding:.45rem .75rem;font-size:.75rem;border-bottom:1px solid var(--g100)}.hw-table tr:last-child td{border-bottom:none}.hw-table tr:hover td{background:#fafcff}
+.hw-use-btn{padding:.25rem .5rem;font-size:.65rem}
 .badge{display:inline-block;padding:.1rem .35rem;border-radius:999px;font-size:.55rem;font-weight:700;text-transform:uppercase}
 .badge.printer{background:var(--bl);color:var(--blue)}.badge.drawer{background:var(--ol);color:#b87a0a}.badge.display{background:var(--ok-l);color:var(--ok)}.badge.terminal{background:#f3e8ff;color:#7c3aed}.badge.screen{background:var(--warn-l);color:var(--warn)}.badge.scanner{background:#e0f2fe;color:#0369a1}
 .tag{display:inline-block;padding:.06rem .25rem;border-radius:3px;font-size:.55rem;font-weight:600;background:var(--g100);color:var(--g700);margin-right:.12rem}
+.tag.builtin{background:#dbeafe;color:#1d4ed8;font-weight:700}
+.dui-builtin-printer .dui-printer-brand::after{content:' · Built-in';font-weight:600;color:#2563eb;font-size:.45rem}
 .hw-pg{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;font-size:.75rem;color:var(--g500)}
 .hw-pg button{padding:.3rem .6rem;border:1.5px solid var(--g200);border-radius:var(--rs);background:var(--white);font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--f)}.hw-pg button:disabled{opacity:.35;cursor:not-allowed}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:.85rem}
-.card{background:var(--white);border-radius:var(--r);padding:1.1rem;border:2px solid var(--g200);transition:border-color .2s}.card.on{border-color:var(--ok)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.85rem;align-items:start}
+.vh-station-map{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,300px) minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:1rem 1.25rem;padding:1.25rem;border:1px solid var(--g200);border-radius:var(--r);background-color:var(--surface);background-image:linear-gradient(var(--g100) 1px,transparent 1px),linear-gradient(90deg,var(--g100) 1px,transparent 1px);background-size:24px 24px;min-height:620px;box-sizing:border-box}
+.vh-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.vh-wire{stroke:var(--g300);stroke-width:2;stroke-dasharray:6 4}
+.vh-node{position:relative;z-index:1;display:flex;flex-direction:column;align-items:stretch;min-width:0}
+.vh-node.is-hub{grid-row:2/5;align-self:center;justify-self:center;width:100%;max-width:300px}
+.vh-node-diagram{background:var(--white);border:2px solid var(--g200);border-radius:var(--r);padding:.55rem;display:flex;align-items:center;justify-content:center;min-height:96px;box-shadow:var(--sh);overflow:hidden}
+.vh-node.is-hub .vh-node-diagram{min-height:200px;padding:.85rem;border-color:var(--blue);border-width:3px}
+.vh-node.on .vh-node-diagram{border-color:var(--ok)}
+.vh-node.unassigned .vh-node-diagram{border-style:dashed;border-color:var(--warn)}
+.vh-node-diagram .dui-panel-body,.vh-node-diagram>.dui-receipt,.vh-node-diagram>.dui-terminal,.vh-node-diagram>.dui-monitor,.vh-node-diagram>.dui-label,.vh-node-diagram>.dui-vfd,.vh-node-diagram>.dui-drawer-unit,.vh-node-diagram>.dui-scanner-gun,.vh-node-diagram>.dui-scale-plate,.vh-node-diagram>.dui-paypoint{width:100%;max-width:100%}
+.vh-node:not(.is-hub) .vh-node-diagram .dui-monitor{max-width:150px}
+.vh-node:not(.is-hub) .vh-node-diagram .dui-term-counter .dui-term-bezel{width:110px}
+.vh-node-card{margin-top:.45rem;padding:.65rem;border:2px solid var(--g200);border-radius:var(--r);background:var(--white);min-width:0;box-sizing:border-box}
+.vh-node-card.on{border-color:var(--ok)}
+.vh-node.unassigned .vh-node-card{border-color:var(--warn);border-style:dashed}
+.vh-node-card .card-head{margin-bottom:.35rem}
+.vh-node-card .card-title{font-size:.72rem}
+.vh-node-card .card-meta{font-size:.62rem;margin-bottom:.4rem}
+.vh-node-card .vh-pick{margin-bottom:.35rem;font-size:.62rem;padding:.32rem .45rem}
+.vh-node-card .card-actions{gap:.25rem}
+.vh-node-card .btn{padding:.32rem .5rem;font-size:.62rem}
+.vh-device-diagram{display:flex;flex-direction:column;align-items:center;gap:.35rem;width:100%;padding:.15rem 0}
+.vh-device-svg{width:100%;max-width:168px;height:auto;display:block;filter:drop-shadow(0 2px 4px rgba(15,23,42,.08))}
+.vh-node.is-hub .vh-device-svg{max-width:220px}
+.vh-device-diagram.unassigned .vh-device-svg{opacity:.92}
+.vh-device-diagram.live .vh-device-svg{max-width:168px}
+.vh-device-badge{font-size:.52rem;font-weight:600;color:var(--g500);text-align:center;line-height:1.35;max-width:100%}
+.vh-device-badge strong{display:block;color:var(--g700);font-size:.58rem;font-weight:800;margin-bottom:.1rem}
+.vh-device-badge.unassigned strong{color:var(--warn)}
+.vh-device-diagram.is-hub .vh-device-badge strong{font-size:.62rem}
+.dui-drawer.live,.dui-scale,.dui-scanner,.dui-terminal,.dui-receipt,.dui-display,.dui-label,.dui-monitor,.dui-paypoint{width:100%;display:flex;flex-direction:column;align-items:center}
+.card{background:var(--white);border-radius:var(--r);padding:1.1rem;border:2px solid var(--g200);transition:border-color .2s;min-width:0;box-sizing:border-box}.card.on{border-color:var(--ok)}
 .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}.card-title{font-weight:700;font-size:.85rem}
 .card-pill{font-size:.6rem;font-weight:700;padding:.15rem .4rem;border-radius:999px}.card-pill.on{background:var(--ok-l);color:var(--ok)}.card-pill.off{background:var(--g100);color:var(--g500)}
 .card-meta{font-size:.7rem;color:var(--g500);margin-bottom:.6rem;line-height:1.5}
+.card-meta.empty{color:var(--g500);font-style:italic}
+.card.unassigned{border-color:var(--warn);border-style:dashed}
+.vh-pick{width:100%;margin-bottom:.5rem;font-size:.7rem;padding:.4rem .55rem}
 .card-actions{display:flex;gap:.35rem;flex-wrap:wrap}
 .btn{padding:.4rem .65rem;border-radius:var(--rs);border:1.5px solid var(--g200);background:var(--white);font-size:.7rem;font-weight:600;cursor:pointer;font-family:var(--f);color:var(--g700);transition:all .15s}
 .btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bl)}
@@ -104,6 +141,91 @@
 .toggle input:checked+.toggle-s{background:var(--ok)}.toggle input:checked+.toggle-s::before{transform:translateX(16px)}
 @media(max-width:768px){.app{grid-template-columns:1fr}.sidebar{display:none}.rsum{grid-template-columns:repeat(2,1fr)}}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--g300);border-radius:3px}
+.vh-modal{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.vh-modal.open{display:flex}
+.vh-modal-box{background:var(--white);border-radius:var(--r);border:1px solid var(--g200);box-shadow:0 12px 40px rgba(15,23,42,.18);width:min(520px,100%);max-height:85vh;overflow:auto}
+.vh-modal-head{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;border-bottom:2px solid var(--orange);background:linear-gradient(135deg,var(--ol),var(--white))}
+.vh-modal-head h3{font-size:.95rem;font-weight:800;margin:0}
+.vh-modal-body{padding:1rem}
+.vh-log{background:#0f172a;color:#e2e8f0;font-family:Consolas,monospace;font-size:.68rem;padding:.75rem;border-radius:var(--rs);max-height:280px;overflow:auto;white-space:pre-wrap}
+.vh-creds{font-size:.65rem;background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:.45rem .55rem;margin-bottom:.55rem;line-height:1.45;word-break:break-all}
+.vh-creds code{color:var(--blue);font-weight:600}
+.vh-stage-wrap{margin-top:1.25rem;padding-top:1rem;border-top:2px solid var(--g200)}
+.vh-stage-wrap h3{font-size:.9rem;font-weight:800;margin-bottom:.65rem}
+.vh-stage{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem}
+.dui-panel{background:var(--white);border:1px solid var(--g200);border-radius:var(--r);padding:.65rem;box-shadow:var(--sh)}
+.dui-panel-title{font-size:.65rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--g500);margin-bottom:.45rem}
+.dui-panel-body{min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dui-caption{font-size:.55rem;color:var(--g500);margin-top:.35rem;text-align:center}
+.dui-printer-body{background:#2d3748;border-radius:8px 8px 4px 4px;padding:.5rem .55rem .35rem;width:100%;max-width:180px;position:relative}
+.dui-printer-brand{font-size:.5rem;color:#94a3b8;font-weight:700}
+.dui-printer-model{font-size:.45rem;color:#64748b;margin-bottom:.3rem}
+.dui-paper{background:#fff;border-radius:2px;min-height:72px;max-height:100px;overflow:auto;padding:.25rem .3rem;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.dui-paper-text{font-family:Consolas,monospace;font-size:.5rem;line-height:1.35;margin:0;white-space:pre-wrap;word-break:break-word}
+.dui-printer-led{width:5px;height:5px;border-radius:50%;background:#22c55e;position:absolute;top:6px;right:6px}
+.dui-kitchen .dui-printer-body{border:2px solid #dc2626}
+.dui-skin-epson .dui-printer-body{background:#1e293b}
+.dui-skin-star .dui-printer-body{background:#0f172a;border-left:3px solid #f59e0b}
+.dui-label{position:relative;width:100%;max-width:160px}
+.dui-label-sticker{background:#fff;border:1px dashed var(--g300);padding:.35rem;min-height:56px;font-size:.45rem}
+.dui-label-sticker pre{margin:0;font-family:Consolas,monospace;white-space:pre-wrap}
+.dui-terminal{width:100%;display:flex;flex-direction:column;align-items:center}
+.dui-term-bezel{background:#1a1a1a;border-radius:10px;padding:8px;box-shadow:inset 0 0 0 2px #333}
+.dui-term-mobile .dui-term-bezel{border-radius:16px;width:100px}
+.dui-term-counter .dui-term-bezel{width:130px}
+.dui-term-screen{background:#0a1628;color:#e2e8f0;min-height:72px;border-radius:4px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:.55rem;padding:.35rem;line-height:1.35}
+.dui-skin-pax .dui-term-screen{background:linear-gradient(180deg,#1e3a5f,#0f172a)}
+.dui-skin-pax .dui-term-approved{color:#f5a623}
+.dui-skin-verifone .dui-term-screen{background:#0d2818;color:#4ade80}
+.dui-skin-ingenico .dui-term-screen{background:#111827;color:#93c5fd}
+.dui-term-approved{color:#4ade80;font-weight:700}
+.dui-term-processing .dui-spinner{width:14px;height:14px;border:2px solid #64748b;border-top-color:#fff;border-radius:50%;margin:0 auto .25rem;animation:duispin .8s linear infinite}
+@keyframes duispin{to{transform:rotate(360deg)}}
+.dui-term-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:4px}
+.dui-term-keypad span{background:#333;height:8px;border-radius:2px}
+.dui-vfd{background:#0a0a0a;border:3px solid #333;border-radius:4px;padding:.4rem .5rem;width:100%;max-width:200px;font-family:Consolas,monospace}
+.dui-vfd-line{color:#33ff66;font-size:.65rem;letter-spacing:.05em;min-height:1.1em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dui-drawer-unit{width:100%;max-width:140px}
+.dui-drawer-slot{background:#4b5563;height:28px;border-radius:4px 4px 0 0;overflow:hidden;transition:height .3s}
+.dui-drawer-slot.open{height:48px}
+.dui-drawer-tray{background:#9ca3af;height:100%;transform:translateY(80%);transition:transform .35s}
+.dui-drawer-slot.open .dui-drawer-tray{transform:translateY(20%)}
+.dui-drawer-front{background:#374151;height:36px;border-radius:0 0 6px 6px;border:2px solid #1f2937}
+.dui-scanner-gun{width:80px;height:48px;background:#2563eb;border-radius:8px 24px 8px 8px;position:relative;margin:0 auto}
+.dui-scanner-window{width:24px;height:12px;background:#1e3a8a;border-radius:2px;position:absolute;right:8px;top:10px}
+.dui-scan-beam{position:absolute;left:0;right:0;top:50%;height:2px;background:#ef4444;opacity:0;transition:opacity .15s}
+.dui-scan-beam.on{opacity:1;animation:duiscan .6s ease}
+@keyframes duiscan{0%,100%{opacity:0}50%{opacity:1}}
+.dui-barcode-readout{font-family:Consolas,monospace;font-size:.6rem;background:var(--g100);padding:.2rem .4rem;border-radius:4px;margin-top:.35rem;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.dui-monitor{width:100%;max-width:180px}
+.dui-monitor-screen{background:#1e293b;border:6px solid #111;border-radius:4px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.dui-pos-placeholder{color:#94a3b8;font-size:.55rem;text-align:center;line-height:1.4}
+.dui-monitor-stand{width:40px;height:16px;background:#333;margin:.2rem auto 0;border-radius:0 0 4px 4px}
+.dui-scale-plate{width:100px;height:12px;background:#9ca3af;border-radius:2px;margin:0 auto .25rem}
+.dui-scale-lcd{background:#0f172a;color:#4ade80;font-family:Consolas,monospace;padding:.35rem .5rem;border-radius:4px;text-align:center}
+.dui-scale-weight{font-size:1.1rem;font-weight:800}
+.dui-scale-unit{font-size:.5rem;margin-left:.15rem;color:#64748b}
+.dui-paypoint{width:100%;max-width:200px}
+.dui-paypoint.dui-pp22{max-width:240px}
+.dui-paypoint-shell{background:linear-gradient(180deg,#e8ecf0,#c5cdd6);border-radius:10px;padding:6px;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #9aa5b1}
+.dui-paypoint-screen{background:#0f172a;border-radius:4px;min-height:72px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:.5rem;text-align:center;padding:.35rem;line-height:1.35}
+.dui-pp22 .dui-paypoint-screen{min-height:88px}
+.dui-paypoint-printer-slot{background:#374151;height:14px;border-radius:0 0 4px 4px;margin-top:4px;position:relative}
+.dui-paypoint-printer-slot::after{content:'';position:absolute;left:50%;top:-3px;transform:translateX(-50%);width:60%;height:6px;background:#fff;border-radius:2px}
+.dui-paypoint-badge{font-size:.45rem;font-weight:800;color:#2563eb;text-align:center;margin-top:3px;letter-spacing:.04em}
+.dui-paypoint-customer-front{background:#1f2937;border-radius:6px 6px 2px 2px;padding:3px;margin-bottom:4px;border:1px solid #374151}
+.dui-paypoint-customer-screen{background:#0f172a;border-radius:3px;min-height:32px;display:flex;align-items:center;justify-content:center;color:#e2e8f0;font-size:.45rem;text-align:center;padding:.2rem;line-height:1.3}
+.dui-pp22 .dui-paypoint-customer-screen{min-height:40px}
+.dui-paypoint-customer-standalone{max-width:160px;margin:0 auto}
+.dui-elo-mobile .dui-monitor-screen{min-height:100px;border-radius:12px}
+.dui-aio-base{background:#1f2937;border-radius:0 0 8px 8px;height:28px;margin-top:-2px}
+.dui-presentation-scanner{width:100px;height:70px;background:#111;border-radius:8px;margin:0 auto;position:relative;border:2px solid #333}
+.dui-presentation-window{width:70%;height:40%;background:#0ea5e9;opacity:.25;margin:12px auto;border-radius:4px}
+.dui-brother-label .dui-label-sticker{border-color:#2563eb}
+.dui-dymo-label .dui-label-sticker{border-color:#000}
+.dui-elo-customer{background:#111;border-radius:6px;padding:4px;border:2px solid #333}
+.dui-elo-customer-screen{background:#1e293b;border-radius:3px;min-height:48px;display:flex;align-items:center;justify-content:center;color:#e2e8f0;font-size:.5rem;padding:.25rem;text-align:center}
+.dui-pp7 .dui-elo-customer-screen{min-height:36px}
 </style>
 </head>
 <body>
@@ -121,7 +243,7 @@
 <main class="main">
 <div class="page active" id="page-dashboard">
 <div class="dash-grid">
-<div class="stat-card blue"><div class="label">Device Library</div><div class="value" id="dDev">0</div><div class="sub">Universal peripherals only</div></div>
+<div class="stat-card blue"><div class="label">Device Library</div><div class="value" id="dDev">0</div><div class="sub">Synced with POS equipment catalog</div></div>
 <div class="stat-card green"><div class="label">Passed</div><div class="value" id="dP">0</div><div class="sub">Ready</div></div>
 <div class="stat-card red"><div class="label">Failed</div><div class="value" id="dF">0</div><div class="sub">--</div></div>
 <div class="stat-card orange"><div class="label">Platform</div><div class="value" id="dPlat" style="font-size:1.25rem">Windows</div><div class="sub">Touch mode</div></div>
@@ -131,14 +253,21 @@
 </div>
 <div class="page" id="page-hardware-library">
 <h2 class="section-title">Universal POS Hardware Library</h2>
-<p style="color:var(--g500);font-size:.75rem;margin:-.4rem 0 .85rem">Only universal, non-proprietary peripherals that work with any POS software.</p>
+<p style="color:var(--g500);font-size:.75rem;margin:-.4rem 0 .85rem">Full POS equipment catalog — Elo PayPoint, PAX, Landi, Sunmi, printers, scanners, and more. Click <strong>Use</strong> to assign to a virtual device.</p>
 <div class="hw-toolbar"><input class="hw-search" placeholder="Search..." id="hwS"><select class="hw-filter fsel" id="hwT"><option value="all">All Types</option><option value="printer">Printers</option><option value="drawer">Drawers</option><option value="display">Displays</option><option value="terminal">Terminals</option><option value="screen">POS Screens</option><option value="scanner">Scanners</option></select><select class="hw-filter fsel" id="hwConn"><option value="all">All Connections</option><option value="USB">USB</option><option value="Ethernet">Ethernet</option><option value="Serial">Serial</option><option value="Bluetooth">Bluetooth</option><option value="WiFi">WiFi</option><option value="RJ12">RJ12</option><option value="4G">4G</option></select></div>
-<table class="hw-table"><thead><tr><th>Type</th><th>Manufacturer</th><th>Model</th><th>Year</th><th>Connections</th><th>Protocol</th></tr></thead><tbody id="hwTB"></tbody></table>
+<table class="hw-table"><thead><tr><th>Type</th><th>Manufacturer</th><th>Model</th><th>Year</th><th>Connections</th><th>Protocol</th><th></th></tr></thead><tbody id="hwTB"></tbody></table>
 <div class="hw-pg"><span id="hwPI"></span><div><button onclick="hPg(-1)" id="hPv">&#8592;</button> <button onclick="hPg(1)" id="hNx">&#8594;</button></div></div>
 </div>
 <div class="page" id="page-virtual-hardware">
 <h2 class="section-title">Virtual Devices</h2>
-<div class="card-grid" id="vhG"></div>
+<p style="color:var(--g500);font-size:.75rem;margin:-.4rem 0 .85rem">Assign each slot from the Device Library (or click <strong>Use</strong> on a catalog row). The POS screen sits in the center; peripherals connect around it with device diagrams. Pick models, then <strong>Start</strong> to expose credentials and protocols.</p>
+<div class="vh-station-map" id="vhG"></div>
+</div>
+<div class="vh-modal" id="vhModal" onclick="if(event.target===this)closeVhModal()">
+<div class="vh-modal-box">
+<div class="vh-modal-head"><h3 id="vhModalTitle">Device</h3><button type="button" class="btn btn-sm" onclick="closeVhModal()">Close</button></div>
+<div class="vh-modal-body" id="vhModalBody"></div>
+</div>
 </div>
 <div class="page" id="page-network-sim">
 <h2 class="section-title">Network Simulation</h2>
@@ -199,8 +328,8 @@
 <button class="lt-tab" onclick="sLive(this,'ios')">iOS</button>
 </div>
 <div class="lp active" id="live-web">
-<div class="embed-bar"><input class="embed-url" id="eUrl" placeholder="POS URL (http://localhost:8080)"><button class="btn p" onclick="document.getElementById('eF').src=document.getElementById('eUrl').value">Load</button><button class="btn" onclick="document.getElementById('eF').src=''">Clear</button></div>
-<iframe id="eF" class="embed-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+<div class="embed-bar"><input class="embed-url" id="eUrl" placeholder="POS URL (http://localhost:8080)" value="http://127.0.0.1:3001/pos/"><button class="btn p" onclick="loadPosEmbed()">Load</button><button class="btn" onclick="clearPosEmbed()">Clear</button></div>
+<iframe id="eF" class="embed-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" title="POS preview area"></iframe>
 </div>
 <div class="lp" id="live-win">
 <div class="np"><h3 style="font-weight:800;margin-bottom:.35rem">Windows App Launcher</h3><p style="font-size:.75rem;color:var(--g500);margin-bottom:.85rem">Bridge intercepts COM ports, USB-HID, and network I/O</p>
@@ -234,124 +363,499 @@
 <h3 class="section-title">Log</h3><div class="log" id="logC"><div class="ll"><span class="lt">--:--:--</span><span class="lm in">Ready</span></div></div></div>
 </main>
 </div>
+<script src="device-library-data.js"></script>
+<script src="device-ui.js"></script>
 <script>
-const DB=[];function a(t,items){items.forEach(d=>DB.push({type:t,...d}))}
-a('printer',[
-{m:'Epson',n:'TM-T88VII',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'Epson',n:'TM-T88VI',y:2021,c:['USB','Ethernet','Serial'],p:'ESC/POS'},
-{m:'Epson',n:'TM-m30III',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'Epson',n:'TM-m50II',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
-{m:'Epson',n:'TM-T20III',y:2021,c:['USB','Ethernet'],p:'ESC/POS'},
-{m:'Epson',n:'TM-L100',y:2022,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
-{m:'Epson',n:'TM-U220',y:2021,c:['USB','Serial','Ethernet'],p:'ESC/POS Impact'},
-{m:'Epson',n:'TM-H6000VI',y:2022,c:['USB','Serial','Ethernet'],p:'ESC/POS + MICR'},
-{m:'Star Micronics',n:'mC-Print3',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT/ESC-POS'},
-{m:'Star Micronics',n:'TSP143IV',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT/ESC-POS'},
-{m:'Star Micronics',n:'mC-Label3',y:2023,c:['USB','WiFi','Bluetooth'],p:'StarPRNT'},
-{m:'Star Micronics',n:'SP700',y:2021,c:['USB','Serial','Ethernet'],p:'Star Line Mode'},
-{m:'Star Micronics',n:'mC-Print2',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'StarPRNT'},
-{m:'Bixolon',n:'SRP-350plusV',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'Bixolon',n:'SRP-Q300II',y:2024,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'Bixolon',n:'SRP-382',y:2022,c:['USB','Ethernet','Bluetooth'],p:'ESC/POS'},
-{m:'Bixolon',n:'SRP-330III',y:2022,c:['USB','Ethernet'],p:'ESC/POS'},
-{m:'Citizen',n:'CT-E651',y:2022,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'Citizen',n:'CT-S4500',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
-{m:'Citizen',n:'CT-E301',y:2021,c:['USB','Ethernet'],p:'ESC/POS'},
-{m:'Citizen',n:'CT-S801III',y:2023,c:['USB','Ethernet','WiFi','Bluetooth'],p:'ESC/POS'},
-{m:'HP',n:'A799 II',y:2021,c:['USB','Serial','Ethernet'],p:'ESC/POS + OPOS'},
-{m:'Zebra',n:'ZQ630 Plus',y:2023,c:['USB','Bluetooth','WiFi'],p:'ZPL/CPCL'},
-{m:'Zebra',n:'ZQ521',y:2022,c:['USB','Bluetooth','WiFi'],p:'ZPL/CPCL'},
-{m:'Seiko',n:'RP-F10',y:2022,c:['USB','Bluetooth'],p:'ESC/POS'},
-{m:'Custom',n:'KUBE II',y:2023,c:['USB','Ethernet','WiFi'],p:'ESC/POS'},
-{m:'Sam4s',n:'ELLIX 50',y:2022,c:['USB','Ethernet','Serial'],p:'ESC/POS'}]);
-a('drawer',[
-{m:'APG',n:'Vasario VB320-BL1616',y:2022,c:['RJ12'],p:'DK Port (Printer Kick)'},
-{m:'APG',n:'Series 4000 JB320',y:2021,c:['RJ12','USB'],p:'DK Port / USB-HID'},
-{m:'APG',n:'ECD330-BLK',y:2022,c:['RJ12','USB-HID'],p:'DK Port / NetPRO'},
-{m:'APG',n:'Vasario VBS320',y:2023,c:['RJ12'],p:'DK Port'},
-{m:'MMF',n:'Val-u Line',y:2021,c:['RJ12'],p:'DK Port'},
-{m:'MMF',n:'Heritage 225',y:2023,c:['RJ12','USB','Ethernet'],p:'NetPRO'},
-{m:'MMF',n:'Advantage ADV-C2',y:2022,c:['RJ12','USB'],p:'DK Port / USB-HID'},
-{m:'Star Micronics',n:'CD3-1616',y:2022,c:['RJ12'],p:'DK Port (24V)'},
-{m:'Star Micronics',n:'CD4-1616',y:2023,c:['RJ12'],p:'DK Port (24V)'},
-{m:'Posiflex',n:'CR-4100',y:2021,c:['RJ12','USB'],p:'DK Port / USB-HID'},
-{m:'HP',n:'Standard Duty Drawer',y:2021,c:['RJ12'],p:'DK Port'},
-{m:'NCR',n:'RealPOS Compact',y:2021,c:['RJ12','USB'],p:'DK Port / OPOS'},
-{m:'Safescan',n:'HD-4646S',y:2022,c:['RJ12'],p:'DK Port'}]);
-a('display',[
-{m:'Logic Controls',n:'LD9000',y:2021,c:['USB-HID','Serial'],p:'OPOS / ESC'},
-{m:'Logic Controls',n:'LD9900',y:2022,c:['USB-HID'],p:'OPOS Line Display'},
-{m:'Posiflex',n:'PD-2608UE',y:2022,c:['USB','Serial'],p:'ESC/POS Subset'},
-{m:'Posiflex',n:'PD-300',y:2023,c:['USB-HID'],p:'OPOS'},
-{m:'HP',n:'Engage One Top Display',y:2023,c:['USB-HID'],p:'USB HID / Web'},
-{m:'Epson',n:'DM-D30',y:2022,c:['USB'],p:'ESC/POS Display'},
-{m:'Elo Touch',n:'10" Customer Display',y:2023,c:['HDMI','USB'],p:'Secondary Monitor'},
-{m:'NCR',n:'RealPOS 5975',y:2021,c:['USB','Serial'],p:'OPOS Line Display'},
-{m:'Aures',n:'OLC 10.1"',y:2022,c:['HDMI','USB'],p:'Web Display'}]);
-a('terminal',[
-{m:'Verifone',n:'P400',y:2021,c:['Ethernet','WiFi'],p:'Semi-integrated Cloud API'},
-{m:'Verifone',n:'M400',y:2022,c:['Ethernet','WiFi'],p:'Semi-integrated Cloud API'},
-{m:'Verifone',n:'P630',y:2023,c:['USB','Ethernet'],p:'Verifone Cloud / VIPA'},
-{m:'Verifone',n:'M424',y:2024,c:['Ethernet','WiFi','USB'],p:'V/OS Android'},
-{m:'Verifone',n:'E285',y:2022,c:['WiFi','Bluetooth','4G'],p:'Cloud API'},
-{m:'Verifone',n:'V240m',y:2023,c:['WiFi','Bluetooth','4G'],p:'Verifone Cloud'},
-{m:'Ingenico',n:'Lane/3000',y:2022,c:['Ethernet','USB'],p:'Telium TETRA / Axium'},
-{m:'Ingenico',n:'Move/5000',y:2022,c:['WiFi','Bluetooth','4G'],p:'Axium OS'},
-{m:'Ingenico',n:'AXIUM DX4000',y:2023,c:['WiFi','Bluetooth','Ethernet'],p:'Android / Axium'},
-{m:'Ingenico',n:'AXIUM RX5000',y:2025,c:['Ethernet','USB'],p:'Android 11 / Axium'},
-{m:'Ingenico',n:'Link/2500',y:2021,c:['Bluetooth'],p:'mPOS SDK'},
-{m:'PAX',n:'A920 Pro',y:2022,c:['WiFi','4G','Ethernet'],p:'PayDroid / Android'},
-{m:'PAX',n:'A80',y:2021,c:['Ethernet','WiFi'],p:'POSLINK Semi-integrated'},
-{m:'PAX',n:'Aries8',y:2023,c:['WiFi','Ethernet','4G'],p:'PayDroid SmartPOS'},
-{m:'PAX',n:'A77',y:2024,c:['Ethernet','WiFi'],p:'POSLINK / Android'},
-{m:'PAX',n:'A35',y:2023,c:['Ethernet','USB'],p:'POSLINK PIN Pad'},
-{m:'Dejavoo',n:'QD4',y:2023,c:['WiFi','Ethernet','4G'],p:'DejaConnect API'},
-{m:'Dejavoo',n:'QD2',y:2022,c:['Ethernet','WiFi'],p:'DejaConnect API'},
-{m:'Castles',n:'S1F2',y:2022,c:['WiFi','Bluetooth','4G'],p:'CAPT Protocol'},
-{m:'Castles',n:'Saturn S1000',y:2023,c:['Ethernet','WiFi'],p:'UPT Protocol'},
-{m:'Newland',n:'N950',y:2022,c:['WiFi','4G','Bluetooth'],p:'SmartPOS Android'},
-{m:'Newland',n:'N910 Pro',y:2023,c:['WiFi','4G','Bluetooth','Ethernet'],p:'SmartPOS Android'},
-{m:'Worldline',n:'YOMANI XR',y:2022,c:['Ethernet','USB'],p:'ep2 / nexo'},
-{m:'Worldline',n:'VALINA',y:2022,c:['WiFi','4G','Ethernet'],p:'nexo / Android'}]);
-a('screen',[
-{m:'Elo Touch',n:'15" I-Series 4',y:2023,c:['HDMI','USB','Ethernet'],p:'PCAP / EloCMS'},
-{m:'Elo Touch',n:'22" I-Series 4',y:2023,c:['HDMI','USB','Ethernet'],p:'PCAP / EloCMS'},
-{m:'Elo Touch',n:'E-Series 15.6"',y:2022,c:['HDMI','VGA','USB'],p:'PCAP Touch'},
-{m:'HP',n:'Engage One Prime',y:2023,c:['USB-C','Ethernet','WiFi'],p:'Windows IoT / Android'},
-{m:'HP',n:'Engage Flex Pro II',y:2022,c:['USB-C','HDMI','Ethernet'],p:'Windows 11 IoT'},
-{m:'HP',n:'RP9 G1',y:2021,c:['USB','HDMI','Ethernet'],p:'Windows 10 IoT LTSC'},
-{m:'NCR',n:'CX7',y:2023,c:['Ethernet','WiFi','USB-C'],p:'Android / NCR Commerce'},
-{m:'NCR',n:'RealPOS XR7',y:2022,c:['Ethernet','USB','Serial'],p:'Windows IoT / OPOS'},
-{m:'Posiflex',n:'HS-3515A',y:2022,c:['USB','Ethernet','Serial'],p:'Windows 10 IoT'},
-{m:'Posiflex',n:'MT-4220W',y:2023,c:['WiFi','Ethernet','USB-C'],p:'Android 12'},
-{m:'Aures',n:'Yuno 15"',y:2022,c:['USB','HDMI','Ethernet'],p:'Windows / Linux / Android'},
-{m:'Aures',n:'Nino II',y:2023,c:['USB-C','WiFi','Ethernet'],p:'Windows / Android'},
-{m:'Diebold Nixdorf',n:'BEETLE /M-III',y:2022,c:['USB','Ethernet','Serial'],p:'Windows IoT / OPOS'},
-{m:'Toshiba',n:'TCxWave 6140',y:2021,c:['Ethernet','USB','Serial'],p:'Windows IoT / JavaPOS'},
-{m:'Sunmi',n:'T2s',y:2023,c:['WiFi','Ethernet','4G'],p:'Sunmi OS (Android)'},
-{m:'Sunmi',n:'D3 Mini',y:2024,c:['WiFi','Ethernet'],p:'Sunmi OS'},
-{m:'iMin',n:'D4-503',y:2023,c:['WiFi','Ethernet'],p:'Android 13'},
-{m:'Hisense',n:'HK718',y:2022,c:['Ethernet','WiFi','USB'],p:'Windows / Android'}]);
-a('scanner',[
-{m:'Honeywell',n:'Voyager 1472g',y:2022,c:['USB-HID'],p:'Keyboard Wedge'},
-{m:'Honeywell',n:'Genesis XP 7680g',y:2023,c:['USB-HID','Serial'],p:'HID / RS232'},
-{m:'Honeywell',n:'Solaris 7980g',y:2022,c:['USB-HID'],p:'Presentation Scanner'},
-{m:'Zebra',n:'DS9308',y:2022,c:['USB-HID'],p:'Keyboard Wedge / OPOS'},
-{m:'Zebra',n:'DS2208',y:2021,c:['USB-HID','Serial'],p:'HID / RS232'},
-{m:'Zebra',n:'DS4608',y:2022,c:['USB-HID'],p:'Keyboard Wedge'},
-{m:'Datalogic',n:'Gryphon GD4520',y:2023,c:['USB-HID','Serial'],p:'HID / RS232'},
-{m:'Datalogic',n:'Magellan 1500i',y:2022,c:['USB-HID'],p:'Presentation / OPOS'},
-{m:'Socket Mobile',n:'SocketScan S740',y:2022,c:['Bluetooth'],p:'BLE HID'},
-{m:'Socket Mobile',n:'DuraScan D750',y:2023,c:['Bluetooth'],p:'BLE HID'}]);
-
+const DB=(window.DEVICE_LIBRARY_DB||[]).slice();
 const PS=20;let pg=0,fl=[...DB];
-function rH(){const s=pg*PS,it=fl.slice(s,s+PS);document.getElementById('hwTB').innerHTML=it.map(d=>`<tr><td><span class="badge ${d.type}">${d.type}</span></td><td style="font-weight:600">${d.m}</td><td>${d.n}</td><td>${d.y}</td><td>${d.c.map(x=>`<span class="tag">${x}</span>`).join('')}</td><td style="font-size:.65rem">${d.p}</td></tr>`).join('');document.getElementById('hwPI').textContent=`${s+1}-${Math.min(s+PS,fl.length)} of ${fl.length}`;document.getElementById('hPv').disabled=pg===0;document.getElementById('hNx').disabled=s+PS>=fl.length;document.getElementById('hwC').textContent=DB.length;document.getElementById('dDev').textContent=DB.length}
+function hwLabel(d){return d.m+' '+d.n}
+function hwConnLabel(d){return(d.c||[]).slice(0,4).join(' · ')}
+function hwLibKey(d){return d.type+'|'+d.m+'|'+d.n}
+function vhSlotsForLibType(type){return vD.filter(s=>s.libType===type)}
+function canAssignFromLibrary(d){return vhSlotsForLibType(d.type).length>0}
+function rH(){const s=pg*PS,it=fl.slice(s,s+PS);document.getElementById('hwTB').innerHTML=it.map(d=>{const key=hwLibKey(d);const use=canAssignFromLibrary(d)?`<button type="button" class="btn vh-use-btn" data-lib-key="${vhEsc(key)}">Use</button>`:'<span style="color:var(--g300)">—</span>';const tags=d.c.map(x=>`<span class="tag">${x}</span>`).join('')+(d.tag==='builtin'?'<span class="tag builtin">Built-in</span>':'');return `<tr><td><span class="badge ${d.type}">${d.type}</span></td><td style="font-weight:600">${d.m}</td><td>${d.n}</td><td>${d.y}</td><td>${tags}</td><td style="font-size:.65rem">${d.p}</td><td>${use}</td></tr>`}).join('');document.getElementById('hwPI').textContent=`${s+1}-${Math.min(s+PS,fl.length)} of ${fl.length}`;document.getElementById('hPv').disabled=pg===0;document.getElementById('hNx').disabled=s+PS>=fl.length;document.getElementById('hwC').textContent=DB.length;document.getElementById('dDev').textContent=DB.length}
 function hF(){const q=document.getElementById('hwS').value.toLowerCase(),t=document.getElementById('hwT').value,c=document.getElementById('hwConn').value;fl=DB.filter(d=>(t==='all'||d.type===t)&&(c==='all'||d.c.some(x=>x.includes(c)))&&(!q||d.m.toLowerCase().includes(q)||d.n.toLowerCase().includes(q)||d.p.toLowerCase().includes(q)));pg=0;rH()}
 function hPg(d){pg+=d;rH()}
 document.getElementById('hwS')?.addEventListener('input',hF);document.getElementById('hwT')?.addEventListener('change',hF);document.getElementById('hwConn')?.addEventListener('change',hF);
+document.getElementById('hwTB')?.addEventListener('click',function(e){const btn=e.target.closest('.vh-use-btn');if(btn)assignLibKeyToVirtual(btn.getAttribute('data-lib-key'))});
 
-const vD=[{name:'Receipt Printer',dev:'Epson TM-T88VII',conn:'USB ESC/POS',det:'COM3 | 115200 8N1',on:true},{name:'Cash Drawer',dev:'APG Vasario VB320',conn:'RJ12 DK Port',det:'ESC p 0 25 250 | Pin 10',on:true},{name:'Payment Terminal',dev:'Verifone P400',conn:'Ethernet TLS',det:'192.168.1.50:8443 JSON-RPC',on:true},{name:'Customer Display',dev:'Logic Controls LD9000',conn:'USB-HID OPOS',det:'2x20 CP437',on:true},{name:'Barcode Scanner',dev:'Honeywell 1472g',conn:'USB-HID Wedge',det:'UPC-A, EAN-13, Code128, QR',on:true},{name:'Kitchen Printer',dev:'Star SP700',conn:'Ethernet 9100',det:'Star Line Mode | Impact',on:false},{name:'Label Printer',dev:'Zebra ZQ630',conn:'WiFi ZPL',det:'4" 203dpi ZPL II',on:false},{name:'POS Touchscreen',dev:'Elo Touch 15"',conn:'HDMI+USB PCAP',det:'1920x1080 10pt',on:false},{name:'Scale',dev:'CAS SW-50',conn:'Serial RS232',det:'9600 7E1',on:false}];
-function rV(){document.getElementById('vhG').innerHTML=vD.map((d,i)=>`<div class="card ${d.on?'on':''}"><div class="card-head"><span class="card-title">${d.name}</span><span class="card-pill ${d.on?'on':'off'}">${d.on?'Active':'Idle'}</span></div><div class="card-meta"><strong>${d.dev}</strong><br>${d.conn}<br>${d.det}</div><div class="card-actions"><button class="btn ${d.on?'p':'a'}" onclick="vD[${i}].on=!vD[${i}].on;rV()">${d.on?'Test':'Activate'}</button><button class="btn">Config</button><button class="btn">Logs</button></div></div>`).join('')}
+const vD=[
+{id:'printer',name:'Receipt Printer',libType:'printer',bridge:true},
+{id:'drawer',name:'Cash Drawer',libType:'drawer',bridge:true,needsPrinter:true},
+{id:'terminal',name:'Payment Terminal',libType:'terminal',bridge:true},
+{id:'display',name:'Customer Display',libType:'display',bridge:true},
+{id:'scanner',name:'Barcode Scanner',libType:'scanner',bridge:true},
+{id:'kitchen',name:'Kitchen Printer',libType:'printer',bridge:true},
+{id:'label',name:'Label Printer',libType:'printer',bridge:true},
+{id:'screen',name:'POS Touchscreen',libType:'screen',bridge:true},
+{id:'scale',name:'Scale',libType:'scale',bridge:true}
+];
+const VH_BRIDGE_DETAIL={
+printer:'TCP port 9100',
+kitchen:'TCP port 9101',
+label:'ZPL TCP port 9102',
+terminal:'JSON/TCP port 8443',
+display:'TCP port 9103',
+drawer:'DK kick via receipt printer',
+scanner:'USB-HID keyboard wedge',
+screen:'Register IP — assign in POS admin equipment record'
+};
+
+function vhClearLib(slot){
+slot.libKey='';
+slot.ui='';
+slot.cat='';
+slot.dev='';
+slot.conn='';
+slot.det='';
+}
+
+function vhApplyLib(slot,entry){
+if(!entry)return;
+slot.libKey=hwLibKey(entry);
+slot.ui=entry.ui||'generic';
+slot.cat=entry.cat||'';
+slot.dev=hwLabel(entry);
+slot.conn=hwConnLabel(entry);
+slot.det=entry.p+(VH_BRIDGE_DETAIL[slot.id]?' — '+VH_BRIDGE_DETAIL[slot.id]:'');
+}
+
+function vhApplyLibToSlot(slot,entry){
+if(!vhSlotAllowsLib(entry,slot)){
+addLog('wn','[VH] '+hwLabel(entry)+' is not available for '+slot.name+' with the current register');
+return false;
+}
+vhApplyLib(slot,entry);
+return true;
+}
+
+function dbByCat(cat){return DB.find(d=>d.cat===cat)||null}
+
+function vhFindLib(key){
+if(!key)return null;
+const p=key.split('|');
+return DB.find(d=>d.type===p[0]&&d.m===p[1]&&d.n===p[2])||null;
+}
+
+function vhFindLibByCat(catId){
+if(!catId)return null;
+return DB.find(d=>d.cat===catId)||null;
+}
+
+const VH_AIO_SLOT_KEYS={
+  printer:'receiptPrinter',
+  display:'customerDisplay',
+  drawer:'cashDrawer',
+  scanner:'barcodeScanner'
+};
+
+function getVhLib(slot){return slot.libKey?vhFindLib(slot.libKey):null}
+
+function getVhRegisterAioProfile(){
+const screen=vD.find(s=>s.id==='screen');
+if(!screen||!screen.cat)return null;
+return (window.AIO_REGISTER_BUILTIN||{})[screen.cat]||null;
+}
+
+function vhLibOptions(libType,slotId){
+let items=DB.filter(d=>d.type===libType);
+const aio=getVhRegisterAioProfile();
+const builtinIds=new Set(window.BUILTIN_MODEL_IDS||[]);
+if(slotId==='kitchen'){
+  items=items.filter(d=>d.tag!=='builtin'&&(d.tag==='kitchen'||/impact|kitchen|giant|sp7/i.test((d.cat||'')+' '+d.n+' '+d.p)));
+}else if(slotId==='label'){
+  items=items.filter(d=>d.tag==='label'||/zpl|label|ql-|zd|dymo|brother/i.test(d.p+' '+d.n));
+}else if(slotId==='printer'){
+  if(aio&&aio.receiptPrinter)items=items.filter(d=>d.cat===aio.receiptPrinter);
+  else items=items.filter(d=>!builtinIds.has(d.cat)&&d.tag!=='label');
+}else if(slotId==='display'){
+  if(aio&&aio.customerDisplay)items=items.filter(d=>d.cat===aio.customerDisplay);
+  else items=items.filter(d=>!builtinIds.has(d.cat));
+}else if(slotId==='drawer'){
+  if(aio&&aio.cashDrawer)items=items.filter(d=>d.cat===aio.cashDrawer);
+  else items=items.filter(d=>!builtinIds.has(d.cat));
+}else if(slotId==='scanner'){
+  if(aio&&aio.barcodeScanner)items=items.filter(d=>d.cat===aio.barcodeScanner);
+  else items=items.filter(d=>!builtinIds.has(d.cat));
+}
+return items.sort((a,b)=>hwLabel(a).localeCompare(hwLabel(b)));
+}
+
+function vhReconcileBuiltinSlots(){
+const aio=getVhRegisterAioProfile();
+const builtinIds=new Set(window.BUILTIN_MODEL_IDS||[]);
+let changed=false;
+const managed=['printer','display','drawer','scanner'];
+vD.forEach(slot=>{
+  const aioKey=VH_AIO_SLOT_KEYS[slot.id];
+  if(!aioKey)return;
+  const requiredCat=aio&&aio[aioKey];
+  if(requiredCat){
+    const entry=vhFindLibByCat(requiredCat);
+    if(entry&&!slot.on){
+      const expected=hwLibKey(entry);
+      if(slot.libKey!==expected){
+        vhApplyLib(slot,entry);
+        changed=true;
+      }
+    }else if(slot.libKey){
+      const cur=getVhLib(slot);
+      if(!cur||cur.cat!==requiredCat){
+        if(!slot.on&&entry){vhApplyLib(slot,entry);changed=true}
+      }
+    }
+    return;
+  }
+  if(!slot.libKey)return;
+  const entry=getVhLib(slot);
+  if(!entry)return;
+  if(managed.includes(slot.id)&&builtinIds.has(entry.cat)){
+    vhClearLib(slot);
+    changed=true;
+  }
+});
+if(changed)saveVhAssignments();
+}
+
+function vhSlotAllowsLib(entry,slot){
+if(!entry||!slot)return false;
+return vhLibOptions(entry.type,slot.id).some(e=>hwLibKey(e)===hwLibKey(entry));
+}
+
+function saveVhAssignments(){
+try{
+const map={};
+vD.forEach(s=>{if(s.libKey)map[s.id]=s.libKey});
+localStorage.setItem('vhAssignments',JSON.stringify(map));
+}catch(e){}
+}
+
+function loadVhAssignments(){
+try{
+const raw=localStorage.getItem('vhAssignments');
+if(!raw)return;
+const map=JSON.parse(raw);
+vD.forEach(slot=>{
+const key=map[slot.id];
+if(!key)return;
+const entry=vhFindLib(key);
+if(entry)vhApplyLib(slot,entry);
+});
+}catch(e){}
+}
+
+function vhInitSlots(){
+try{
+if(localStorage.getItem('vhConfigVersion')!=='3'){
+localStorage.removeItem('vhAssignments');
+localStorage.setItem('vhConfigVersion','3');
+}
+loadVhAssignments();
+}catch(e){}
+}
+
+function changeVhLibrary(i,libKey){
+const slot=vD[i];
+if(!slot||!slot.libType)return;
+if(slot.on){addLog('wn','[VH] Stop '+slot.name+' before changing hardware');rV();return}
+if(!libKey){vhClearLib(slot);if(slot.id==='screen')vhReconcileBuiltinSlots();saveVhAssignments();rV();return}
+const entry=vhFindLib(libKey);
+if(entry){
+if(!vhApplyLibToSlot(slot,entry)){rV();return}
+if(slot.id==='screen')vhReconcileBuiltinSlots();
+saveVhAssignments();
+rV();
+addLog('ok','[VH] '+slot.name+' → '+slot.dev);
+}
+}
+
+function assignLibKeyToVirtual(libKey){
+const entry=vhFindLib(libKey);
+if(!entry)return;
+const slots=vhSlotsForLibType(entry.type);
+if(!slots.length){addLog('wn','[VH] No virtual slot for '+entry.type);return}
+if(slots.length===1){
+const slot=slots[0];
+if(slot.on){addLog('wn','[VH] Stop '+slot.name+' first');return}
+if(!vhApplyLibToSlot(slot,entry))return;
+if(slot.id==='screen')vhReconcileBuiltinSlots();
+saveVhAssignments();
+rV();
+nav('virtual-hardware');
+addLog('ok','[VH] Assigned '+hwLabel(entry)+' to '+slot.name);
+return;
+}
+const allowed=slots.filter(s=>vhSlotAllowsLib(entry,s));
+if(!allowed.length){addLog('wn','[VH] '+hwLabel(entry)+' is not available with the current register');return}
+openVhAssignModal(entry,allowed);
+}
+
+function openVhAssignModal(entry,slots){
+document.getElementById('vhModalTitle').textContent='Assign '+hwLabel(entry);
+document.getElementById('vhModalBody').innerHTML='<p style="font-size:.75rem;color:var(--g500);margin:0 0 .6rem">Which virtual device should use this hardware?</p>'+
+slots.map(s=>'<button type="button" class="btn p vh-assign-slot" style="display:block;width:100%;margin:.35rem 0" data-lib-key="'+encodeURIComponent(hwLibKey(entry))+'" data-slot-id="'+vhEsc(s.id)+'">'+vhEsc(s.name)+'</button>').join('');
+document.getElementById('vhModal').classList.add('open');
+}
+
+function confirmVhAssign(libKey,virtualId){
+const entry=vhFindLib(libKey);
+const slot=vD.find(s=>s.id===virtualId);
+if(!entry||!slot)return;
+if(slot.on){addLog('wn','[VH] Stop '+slot.name+' first');return}
+if(!vhApplyLibToSlot(slot,entry))return;
+if(slot.id==='screen')vhReconcileBuiltinSlots();
+saveVhAssignments();
+closeVhModal();
+rV();
+nav('virtual-hardware');
+addLog('ok','[VH] Assigned '+hwLabel(entry)+' to '+slot.name);
+}
+
+vhInitSlots();
+vhReconcileBuiltinSlots();
+document.getElementById('vhModal')?.addEventListener('click',function(e){const btn=e.target.closest('.vh-assign-slot');if(btn)confirmVhAssign(decodeURIComponent(btn.getAttribute('data-lib-key')),btn.getAttribute('data-slot-id'))});
+const vhBridgeInfo={};
+let vhOpenLogId=null;
+
+function vhEsc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+
+function vhCredSummary(id,info){
+  if(!info||!info.credentials)return '';
+  const c=info.credentials;
+  const parts=[];
+  if(c.ip&&c.port)parts.push(`<code>${vhEsc(c.ip)}:${vhEsc(c.port)}</code>`);
+  else if(c.ip)parts.push(`IP <code>${vhEsc(c.ip)}</code>`);
+  if(c.macAddress)parts.push(`MAC <code>${vhEsc(c.macAddress)}</code>`);
+  if(c.poiDeviceId)parts.push(`POI <code>${vhEsc(c.poiDeviceId)}</code>`);
+  if(c.serialNumber)parts.push(`S/N ${vhEsc(c.serialNumber)}`);
+  if(c.adminHint&&!c.ip)parts.push(vhEsc(c.adminHint));
+  return parts.length?`<div class="vh-creds">${parts.join(' · ')}</div>`:'';
+}
+
+async function syncVhBridge(){
+  if(window.bridge&&window.bridge.listDevices){
+    try{
+      const list=await window.bridge.listDevices();
+      Object.keys(vhBridgeInfo).forEach(k=>delete vhBridgeInfo[k]);
+      (list||[]).forEach(d=>{vhBridgeInfo[d.id]=d});
+      vD.forEach(d=>{d.on=Boolean(vhBridgeInfo[d.id])});
+    }catch(e){
+      addLog('wn','[VH] Bridge sync failed: '+(e&&e.message?e.message:'unknown'));
+    }
+  }
+  rV();
+  if(window.DeviceUI)window.DeviceUI.renderStage(vD,vhBridgeInfo);
+}
+
+async function toggleVhDevice(i){
+  const d=vD[i];
+  if(!d||!d.bridge)return;
+  if(!window.bridge||!window.bridge.startDevice){addLog('wn','[VH] Bridge only available in Electron app');return}
+  if(!d.on&&!d.libKey){
+    addLog('wn','[VH] Select equipment from the Device Library before starting '+d.name);
+    rV();
+    return;
+  }
+  if(d.on){
+    await window.bridge.stopDevice(d.id);
+    delete vhBridgeInfo[d.id];
+    d.on=false;
+    if(window.DeviceUI)window.DeviceUI.resetDevice(d.id);
+    addLog('in','[VH] Stopped '+d.name);
+    rV();
+    return;
+  }
+  if(d.needsPrinter&&!vhBridgeInfo.printer){
+    addLog('wn','[VH] Start Receipt Printer first (drawer uses printer DK port)');
+    return;
+  }
+  const lib=getVhLib(d);
+  if(!lib){addLog('er','[VH] No hardware model assigned');return}
+  const opts={manufacturer:lib.m,model:lib.n,protocol:lib.p,catalogId:lib.cat||''};
+  const res=await window.bridge.startDevice(d.id,opts);
+  if(res&&res.ok){
+    vhBridgeInfo[d.id]=res.device;
+    d.on=true;
+    addLog('ok','[VH] '+d.name+' listening — copy credentials into POS admin');
+    rV();
+    openVhCredentials(i);
+  }else{
+    addLog('er','[VH] Failed to start '+d.name+': '+(res&&res.error?res.error:'unknown'));
+  }
+}
+
+async function testVhDevice(i){
+  const d=vD[i];
+  if(!d)return;
+  if(!d.on){await toggleVhDevice(i);return}
+  if(d.id==='scanner'){
+    const code=prompt('Barcode to wedge-scan into focused POS field:','012345678905');
+    if(code&&window.bridge&&window.bridge.scanBarcode){
+      const r=await window.bridge.scanBarcode(code);
+      addLog(r&&r.ok?'ok':'er','[VH] Scanner '+(r&&r.ok?'sent':'failed')+': '+code);
+    }
+    return;
+  }
+  openVhLogs(i);
+}
+
+function openVhCredentials(i){
+  const d=vD[i];
+  const info=vhBridgeInfo[d.id];
+  if(!d||!info)return;
+  const c=info.credentials||{};
+  const rows=[];
+  const add=(label,val)=>{if(val!=null&&String(val).trim()!=='')rows.push(`<div class="ff"><label>${label}</label><input class="fi" readonly value="${vhEsc(val)}" data-copy-val></div>`)};
+  add('Manufacturer',c.manufacturer);
+  add('Model',c.model);
+  add('Serial number',c.serialNumber);
+  add('IP address',c.ip);
+  add('Port',c.port);
+  add('POI device ID',c.poiDeviceId);
+  add('MAC address',c.macAddress);
+  add('Protocol',c.protocol||c.connection);
+  add('Admin setup',c.adminHint);
+  document.getElementById('vhModalTitle').textContent=d.name+' — Credentials for POS admin';
+  document.getElementById('vhModalBody').innerHTML=rows.join('')+
+    '<p style="font-size:.7rem;color:var(--g500);margin:.5rem 0 0">Enter these in your POS cloud admin under <strong>Equipment</strong>, assign to a register, then open the POS app.</p>'+
+    '<button class="btn p" type="button" style="margin-top:.6rem" onclick="vhCopyAllCreds()">Copy all</button>';
+  document.getElementById('vhModal').classList.add('open');
+}
+
+function vhCopyAllCreds(){
+  const inputs=document.querySelectorAll('#vhModalBody [data-copy-val]');
+  const text=Array.from(inputs).map(el=>el.value).filter(Boolean).join('\n');
+  if(navigator.clipboard&&text){navigator.clipboard.writeText(text);addLog('ok','[VH] Credentials copied')}
+}
+
+function closeVhModal(){document.getElementById('vhModal').classList.remove('open');vhOpenLogId=null}
+
+async function openVhLogs(i){
+  const d=vD[i];
+  if(!d)return;
+  vhOpenLogId=d.id;
+  let lines='';
+  if(window.bridge&&window.bridge.getDeviceLogs){
+    const logs=await window.bridge.getDeviceLogs(d.id,80);
+    lines=(logs||[]).map(e=>{
+      const t=new Date(e.timestamp).toLocaleTimeString('en-US',{hour12:false});
+      const dir=e.direction==='in'?'←':'→';
+      return `[${t}] ${dir} ${e.message}`;
+    }).join('\n');
+  }
+  if(!lines)lines='(No events yet — start device and connect from POS admin/register)';
+  document.getElementById('vhModalTitle').textContent=d.name+' — Connection log';
+  document.getElementById('vhModalBody').innerHTML=`<div class="vh-log" id="vhLogBox">${vhEsc(lines)}</div><button class="btn" type="button" style="margin-top:.6rem" onclick="vhClearLogs(${i})">Clear log</button>`;
+  document.getElementById('vhModal').classList.add('open');
+}
+
+async function vhClearLogs(i){
+  const d=vD[i];
+  if(window.bridge&&window.bridge.clearDeviceLogs)await window.bridge.clearDeviceLogs(d.id);
+  openVhLogs(i);
+}
+
+const VH_LAYOUT={
+  kitchen:{col:1,row:1},
+  label:{col:3,row:1},
+  printer:{col:1,row:2},
+  display:{col:3,row:2},
+  terminal:{col:1,row:3},
+  screen:{col:2,row:2,rowSpan:3,hub:true},
+  scanner:{col:3,row:3},
+  drawer:{col:1,row:4},
+  scale:{col:3,row:4}
+};
+
+function vhNodeControls(d,i,info){
+  const assigned=Boolean(d.libKey);
+  const status=d.on?(info&&info.status==='listening'?'Listening':info&&info.status==='ready'?'Ready':'Active'):'Stopped';
+  const pill=d.on?'on':(assigned?'off':'');
+  let picker='';
+  if(d.libType){
+    const opts=vhLibOptions(d.libType,d.id);
+    const cur=d.libKey||'';
+    const aio=getVhRegisterAioProfile();
+    const aioKey=VH_AIO_SLOT_KEYS[d.id];
+    const lockedBuiltin=Boolean(aio&&aioKey&&aio[aioKey]&&opts.length===1);
+    const aioNotes={
+      printer:'Built-in receipt printer on this register.',
+      display:'Built-in customer display on this register.',
+      drawer:'Built-in cash drawer on this register.',
+      scanner:'Built-in barcode scanner on this register.'
+    };
+    const aioNote=aioNotes[d.id]&&aio&&aio[aioKey]?'<p style="font-size:.55rem;color:var(--blue);margin:.1rem 0 .25rem">'+aioNotes[d.id]+'</p>':'';
+    picker='<label style="font-size:.55rem;font-weight:700;color:var(--g500);display:block;margin-bottom:.15rem">Equipment</label>'+aioNote+'<select class="fi fsel vh-pick" onchange="changeVhLibrary('+i+',this.value)"'+(d.on||lockedBuiltin?' disabled':'')+'>'+
+      (lockedBuiltin?'':('<option value=""'+(cur?'':' selected')+'>— Select from Device Library —</option>'))+
+      opts.map(e=>{const k=hwLibKey(e);return '<option value="'+vhEsc(k)+'"'+(k===cur?' selected':'')+'>'+vhEsc(hwLabel(e))+'</option>'}).join('')+
+      '</select>';
+  }
+  const meta=assigned
+    ?'<div class="card-meta"><strong>'+vhEsc(d.dev)+'</strong><br>'+vhEsc(d.conn||'')+'</div>'
+    :'<div class="card-meta empty">No equipment selected</div>';
+  const startBtn=assigned
+    ?`<button class="btn ${d.on?'p':'a'}" onclick="toggleVhDevice(${i})">${d.on?'Stop':'Start'}</button>`
+    :`<button class="btn" disabled title="Select equipment first">Start</button>`;
+  return `<div class="vh-node-card card ${d.on?'on':''} ${assigned?'':'unassigned'}"><div class="card-head"><span class="card-title">${d.name}</span><span class="card-pill ${pill}">${assigned?status:'Unassigned'}</span></div>${picker}${meta}${vhCredSummary(d.id,info)}<div class="card-actions">${startBtn}${d.on?`<button class="btn" onclick="openVhCredentials(${i})">Credentials</button>`:''}<button class="btn" onclick="openVhLogs(${i})">Logs</button>${d.on&&d.id==='scanner'?`<button class="btn" onclick="testVhDevice(${i})">Scan</button>`:''}</div></div>`;
+}
+
+function vhDrawWires(){
+  const map=document.getElementById('vhG');
+  const svg=document.getElementById('vhWires');
+  const hub=document.querySelector('.vh-node.is-hub .vh-node-diagram');
+  if(!map||!svg||!hub)return;
+  const mr=map.getBoundingClientRect();
+  const hr=hub.getBoundingClientRect();
+  const cx=hr.left+hr.width/2-mr.left;
+  const cy=hr.top+hr.height/2-mr.top;
+  const w=map.clientWidth;
+  const h=map.clientHeight;
+  svg.setAttribute('viewBox','0 0 '+w+' '+h);
+  svg.setAttribute('width',w);
+  svg.setAttribute('height',h);
+  const lines=[];
+  document.querySelectorAll('.vh-node:not(.is-hub) .vh-node-diagram').forEach(function(el){
+    const r=el.getBoundingClientRect();
+    const px=r.left+r.width/2-mr.left;
+    const py=r.top+r.height/2-mr.top;
+    lines.push('<line x1="'+cx+'" y1="'+cy+'" x2="'+px+'" y2="'+py+'" class="vh-wire"/>');
+  });
+  svg.innerHTML=lines.join('');
+}
+
+function rV(){
+  const mount=document.getElementById('vhG');
+  if(!mount)return;
+  const nodes=vD.map(function(d,i){
+    const lay=VH_LAYOUT[d.id]||{col:1,row:1};
+    const info=vhBridgeInfo[d.id];
+    const assigned=Boolean(d.libKey);
+    const visual=window.DeviceUI?window.DeviceUI.renderDiagramVisual(d.id,d,info):'';
+    let style='grid-column:'+lay.col+';grid-row:'+lay.row;
+    if(lay.rowSpan)style='grid-column:'+lay.col+';grid-row:'+lay.row+' / '+(lay.row+lay.rowSpan);
+    const hubCls=lay.hub?' is-hub':'';
+    return '<div class="vh-node'+hubCls+(d.on?' on':'')+(assigned?'':' unassigned')+'" style="'+style+'" data-vh-id="'+d.id+'"><div class="vh-node-diagram" id="vhui-'+d.id+'">'+visual+'</div>'+vhNodeControls(d,i,info)+'</div>';
+  }).join('');
+  mount.innerHTML='<svg class="vh-wires" id="vhWires" aria-hidden="true"></svg>'+nodes;
+  if(window.DeviceUI)window.DeviceUI.renderStage(vD,vhBridgeInfo);
+  requestAnimationFrame(vhDrawWires);
+}
+
+if(window.bridge&&window.bridge.onEvent){
+  window.bridge.onEvent(function(ev){
+    if(ev&&ev.type==='log'&&vhOpenLogId&&ev.entry&&ev.entry.deviceId===vhOpenLogId){
+      const box=document.getElementById('vhLogBox');
+      if(box){
+        const t=new Date(ev.entry.timestamp).toLocaleTimeString('en-US',{hour12:false});
+        const dir=ev.entry.direction==='in'?'←':'→';
+        box.textContent=`[${t}] ${dir} ${ev.entry.message}\n`+box.textContent;
+      }
+    }
+    if(ev&&(ev.type==='device-started'||ev.type==='device-stopped'))syncVhBridge();
+    if(ev&&ev.type==='device-ui'&&window.DeviceUI)window.DeviceUI.handleEvent(ev);
+  });
+}
+syncVhBridge();
 
 function simFailover(){document.getElementById('netPrimary').textContent='Disconnected';document.getElementById('netPrimary').className='net-val bad';document.getElementById('netFailover').textContent='Active';document.getElementById('netFailover').className='net-val good';document.getElementById('netActive').textContent='4G Failover';document.getElementById('netActive').className='net-val warn';document.getElementById('netLat').textContent='45ms';document.getElementById('netLat').className='net-val warn';document.getElementById('netDL').textContent='85 Mbps';document.getElementById('netUL').textContent='25 Mbps';addLog('wn','[NET] WAN dropped - failover to 4G')}
 function simFailback(){document.getElementById('netPrimary').textContent='Connected';document.getElementById('netPrimary').className='net-val good';document.getElementById('netFailover').textContent='Standby';document.getElementById('netFailover').className='net-val';document.getElementById('netFailover').style.color='var(--g500)';document.getElementById('netActive').textContent='Primary';document.getElementById('netActive').className='net-val good';document.getElementById('netLat').textContent='12ms';document.getElementById('netLat').className='net-val good';document.getElementById('netDL').textContent='450 Mbps';document.getElementById('netUL').textContent='50 Mbps';addLog('ok','[NET] WAN restored - failback complete')}
@@ -376,11 +880,16 @@ async function run(){const b=document.getElementById('runBtn');b.textContent='Ru
 
 function addLog(t,m){var el=document.getElementById('logC');var cls={ok:'ok',er:'er',wn:'wn',in:'in'}[t]||'in';el.innerHTML+='<div class="ll"><span class="lt">'+new Date().toLocaleTimeString('en-US',{hour12:false})+'</span><span class="lm '+cls+'">'+m+'</span></div>';el.scrollTop=el.scrollHeight}
 
-function nav(p){document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active')});document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});var btn=document.querySelector('[data-page="'+p+'"]');if(btn)btn.classList.add('active');var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active')}
+function nav(p){if(p!=='pos-live'&&window.bridge&&window.bridge.clearPos)window.bridge.clearPos();document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active')});document.querySelectorAll('.page').forEach(function(x){x.classList.remove('active')});var btn=document.querySelector('[data-page="'+p+'"]');if(btn)btn.classList.add('active');var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active');if(p==='virtual-hardware')requestAnimationFrame(vhDrawWires)}
+function posEmbedBounds(){var el=document.getElementById('eF');var r=el.getBoundingClientRect();return{x:Math.round(r.left),y:Math.round(r.top),width:Math.round(r.width),height:Math.round(r.height)}}
+async function loadPosEmbed(){var url=document.getElementById('eUrl').value.trim();if(!url){addLog('wn','[POS] Enter a URL');return}if(window.bridge&&window.bridge.loadPos){var res=await window.bridge.loadPos(url,posEmbedBounds());if(res&&res.ok){addLog('ok','[POS] Loaded '+url)}else{addLog('er','[POS] Load failed: '+(res&&res.error?res.error:'unknown'))}}else{document.getElementById('eF').src=url}}
+async function clearPosEmbed(){if(window.bridge&&window.bridge.clearPos)await window.bridge.clearPos();document.getElementById('eF').src='';addLog('in','[POS] Cleared')}
+if(window.bridge&&window.bridge.onPosResizeRequest){window.bridge.onPosResizeRequest(function(){if(window.bridge.resizePos)window.bridge.resizePos(posEmbedBounds())})}
 document.querySelectorAll('.nav-item').forEach(function(b){b.addEventListener('click',function(){nav(b.dataset.page)})});
 document.querySelectorAll('.platform-tab').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('.platform-tab').forEach(function(x){x.classList.remove('active')});t.classList.add('active');document.getElementById('dPlat').textContent=t.textContent})});
 document.getElementById('runBtn').addEventListener('click',run);
-rH();rV();rT();if(window.lucide)lucide.createIcons();
+window.addEventListener('resize',function(){if(document.getElementById('page-virtual-hardware')?.classList.contains('active'))vhDrawWires()});
+rH();rT();rV();if(window.lucide)lucide.createIcons();
 </script>
 </body>
 </html>
